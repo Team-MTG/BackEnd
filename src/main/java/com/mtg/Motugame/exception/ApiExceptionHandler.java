@@ -13,12 +13,12 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = {IllegalArgumentException.class})
     public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e) {
 
-        HttpStatus httpStatus =HttpStatus.BAD_REQUEST;
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 httpStatus);
 
-        return new ResponseEntity<>(apiException,httpStatus);
+        return new ResponseEntity<>(apiException, httpStatus);
     }
 }
