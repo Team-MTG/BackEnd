@@ -19,10 +19,16 @@ public class StockPriceEntity {
     @ManyToOne
     @JoinColumn(name = "stock_code")
     private StockInfoEntity stockInfo;
+
     private Date date;
+
     private Integer open;
+
     private Integer high;
+
     private Integer low;
+
     private Integer close;
+
     private Float changePrice;
 }
