@@ -14,6 +14,7 @@ import java.util.Date;
 @Table(name = "stock_price")
 public class StockPriceEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     //FK
     @ManyToOne
