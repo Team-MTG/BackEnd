@@ -1,6 +1,7 @@
 package com.mtg.Motugame.user.service;
 
 import com.mtg.Motugame.entity.UserEntity;
+import com.mtg.Motugame.exception.ExceptionMessage;
 import com.mtg.Motugame.user.repository.UserRepository;
 import org.apache.catalina.User;
 import org.assertj.core.api.Assertions;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -47,6 +49,14 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("id로 유저 찾기 실패 케이스")
+    void findUserByIdFail() throws Exception{
+        assertThatThrownBy(() -> userService.findUser(""))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(ExceptionMessage.NO_DATA_ERROR);
+    }
+
+    @Test
     @DisplayName("유저 목록 찾기 성공 테스트")
     void findAllUser(){
         //given
@@ -60,9 +70,18 @@ public class UserServiceImplTest {
 
         //then
         Assertions.assertThat(list2).isNotEmpty();
-        Assertions.assertThat(list2.size()).isEqualTo(2);
+        Assertions.assertThat(list2.size()).isEqualTo(0);
         Assertions.assertThat(list2.get(0).getId()).isEqualTo("qwd5320");
         Assertions.assertThat(list2.get(1).getId()).isEqualTo("kor1234");
     }
+
+    @Test
+    @DisplayName("유저 목록 찾기 실패 케이스")
+    void findAllUserFail(){
+        assertThatThrownBy(() -> userService.findAllUser())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(ExceptionMessage.NO_DATA_ERROR);
+    }
+
 
 }

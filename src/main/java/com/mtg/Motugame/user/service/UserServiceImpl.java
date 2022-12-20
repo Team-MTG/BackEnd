@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService{
         return users;
     }
 
+    @Transactional
     public UserEntity insertUser(UserDto userDto){
         if(userRepository.findById(userDto.getId()).isPresent()) {
             throw new IllegalArgumentException(ExceptionMessage.USER_ALREADY_EXISTS);
