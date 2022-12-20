@@ -9,4 +9,5 @@ public interface UserService {
     public UserEntity findUser(String id);
 
     public List<UserEntity> findAllUser();
+    public UserEntity insertUser(UserDto userDto);
 }

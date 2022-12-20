@@ -25,7 +25,9 @@ public class UserController {
 
     @PostMapping(value = "/users")
     public ResponseEntity<UserEntity> InsertUser(@RequestBody UserDto userDto){
-        return null;
+        UserEntity user = userService.insertUser(userDto);
+
+        return ResponseEntity.ok().body(user);
     }
 
     @GetMapping(value = "/users/{id}")
