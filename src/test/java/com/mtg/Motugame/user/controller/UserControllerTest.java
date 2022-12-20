@@ -47,16 +47,6 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-//    @Autowired
-//    private WebApplicationContext ctx;
-//
-//    @BeforeEach
-//    public void setup(){
-//        mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
-//                .addFilters(new CharacterEncodingFilter("UTF-8", true)) // 한글 깨짐 처리
-//                .build();
-//    }
-
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -180,20 +170,25 @@ class UserControllerTest {
     @DisplayName("유저 등록 실패")
     public void insertUser_fail() throws Exception {
 
-        // 1. userRespoitory.findAll mock을 통해 NULL을 반환하게 만든다.
-        // 2. mvc를 통해서 get요청을 보낸다.
-        // 3. 이러면 badrequest보내기 때문에 이를 확인한다.
-
         //given
-        given(userService.findAllUser()).willThrow(new IllegalArgumentException());
+        UserDto userDto = UserDto.builder()
+                .id("해찬123")
+                .name("유해찬")
+                .gameId("해찬")
+                .build();
+        given(userService.insertUser(any())).willThrow(new IllegalArgumentException());
+        String param = objectMapper.writeValueAsString(userDto);
 
         //when
         mockMvc.perform(
-                        get("/api/users"))
+                                post("/api/users")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(param))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
 
         //then
-        verify(userService, atLeastOnce()).findAllUser();
+        verify(userService, atLeastOnce()).insertUser(any());
     }
 }
