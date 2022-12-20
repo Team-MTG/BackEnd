@@ -68,6 +68,7 @@ public class RankingServiceImpl implements RankingService{
                         .build();
                 return rankResponseDto;
             }
+            i++;
         }
 
         return null;
