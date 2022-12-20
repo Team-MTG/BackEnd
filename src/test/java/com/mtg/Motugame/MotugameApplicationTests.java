@@ -1,7 +1,6 @@
 package com.mtg.Motugame;
 
 
-
 import com.mtg.Motugame.entity.UserEntity;
 import com.mtg.Motugame.user.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -31,19 +30,19 @@ class MotugameApplicationTests {
     @Autowired
     private MockMvc mockMvc;
 
-	@Test
-    public void findAllUser_success() throws Exception{
+    @Test
+    public void findAllUser_success() throws Exception {
         //given
         List<UserEntity> userList = new ArrayList<>();
-        userList.add(new UserEntity("해찬123","해찬","광운대1짱"));
-        userList.add(new UserEntity("강호123","강호","광운대2짱"));
-        userList.add(new UserEntity("서진123","서진","광운대-1짱"));
-        userList.add(new UserEntity("지원123","지원","광운대0짱"));
+        userList.add(new UserEntity("해찬123", "해찬", "광운대1짱"));
+        userList.add(new UserEntity("강호123", "강호", "광운대2짱"));
+        userList.add(new UserEntity("서진123", "서진", "광운대-1짱"));
+        userList.add(new UserEntity("지원123", "지원", "광운대0짱"));
         given(userService.findAllUser()).willReturn(userList);
 
         //when
         mockMvc.perform(
-                get("/api/users"))
+                        get("/api/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].id").exists())
                 .andExpect(jsonPath("$.[0].name").exists())
@@ -51,7 +50,7 @@ class MotugameApplicationTests {
                 .andDo(print());
 
         //then
-        verify(userService,atLeastOnce()).findAllUser();
+        verify(userService, atLeastOnce()).findAllUser();
     }
 
 //    @Test
@@ -78,7 +77,7 @@ class MotugameApplicationTests {
 //    }
 
     @Test
-    public void findUser_success() throws Exception{
+    public void findUser_success() throws Exception {
         //given
         UserEntity user = UserEntity.builder()
                 .id("해찬123")
@@ -97,7 +96,7 @@ class MotugameApplicationTests {
                 .andDo(print());
 
         //then
-        verify(userService,atLeastOnce()).findUser(anyString());
+        verify(userService, atLeastOnce()).findUser(anyString());
     }
 
 //    @Test
@@ -117,7 +116,6 @@ class MotugameApplicationTests {
 //        //then
 //        verify(userService,atLeastOnce()).findAllUser();
 //    }
-
 
 
 }
