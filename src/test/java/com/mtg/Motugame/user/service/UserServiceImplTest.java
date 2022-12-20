@@ -2,6 +2,7 @@ package com.mtg.Motugame.user.service;
 
 import com.mtg.Motugame.entity.UserEntity;
 import com.mtg.Motugame.exception.ExceptionMessage;
+import com.mtg.Motugame.user.dto.UserDto;
 import com.mtg.Motugame.user.repository.UserRepository;
 import org.apache.catalina.User;
 import org.assertj.core.api.Assertions;
@@ -17,11 +18,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
@@ -70,7 +72,7 @@ public class UserServiceImplTest {
 
         //then
         Assertions.assertThat(list2).isNotEmpty();
-        Assertions.assertThat(list2.size()).isEqualTo(0);
+        Assertions.assertThat(list2.size()).isEqualTo(2);
         Assertions.assertThat(list2.get(0).getId()).isEqualTo("qwd5320");
         Assertions.assertThat(list2.get(1).getId()).isEqualTo("kor1234");
     }
@@ -83,5 +85,46 @@ public class UserServiceImplTest {
                 .hasMessageContaining(ExceptionMessage.NO_DATA_ERROR);
     }
 
+    @Test
+    @DisplayName("유저 등록 성공 케이스")
+    void insertUser(){
+        //given
+        UserDto request = UserDto.builder()
+                .id("qwd5320")
+                .name("jiwon")
+                .gameId("jiione")
+                .build();
 
+        doReturn(new UserEntity(request.getId(),request.getName(),request.getGameId()))
+                .when(userRepository)
+                .save(any(UserEntity.class));
+
+        //when
+        UserEntity user = userService.insertUser(request);
+
+        //then
+        Assertions.assertThat(user).isNotNull();
+        Assertions.assertThat(user.getId()).isEqualTo(request.getId());
+        Assertions.assertThat(user.getName()).isEqualTo(request.getName());
+
+        //verify
+        verify(userRepository,times(1)).save(any(UserEntity.class));
+    }
+
+    @Test
+    @DisplayName("유저 등록 실패 케이스")
+    void insertUserFail(){
+        //given
+        UserEntity user = new UserEntity("qwd5320", "jiwon","jiione");
+        given(userRepository.findById(any())).willReturn(Optional.of(user));
+        UserDto user2 = UserDto.builder()
+                .id("qwd5320")
+                .name("minsun")
+                .gameId("sun")
+                .build();
+
+        assertThatThrownBy(() -> userService.insertUser(user2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(ExceptionMessage.USER_ALREADY_EXISTS);
+    }
 }
