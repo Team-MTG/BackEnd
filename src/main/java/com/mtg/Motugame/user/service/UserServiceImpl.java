@@ -4,6 +4,8 @@ import com.mtg.Motugame.entity.UserEntity;
 import com.mtg.Motugame.exception.ExceptionMessage;
 import com.mtg.Motugame.user.dto.UserDto;
 import com.mtg.Motugame.user.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+
     public UserEntity findUser(String id){
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
         return user;
