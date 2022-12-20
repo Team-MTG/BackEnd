@@ -28,7 +28,7 @@ class UserRepositoryTest {
     @Test
     void findAllUser() {
         //given
-        UserEntity user = user();
+        userRepository.save(user());
 
         //when
         List<UserEntity> userList = userRepository.findAll();
