@@ -15,7 +15,7 @@ import java.util.List;
 public class StockServiceImpl implements StockService {
     private final StockInfoRepository stockInfoRepository;
 
-    public List<StockDataInfoDto> getStocksPrices(int[] index) {
+    public List<StockDataInfoDto> getStocksPrices(List<Integer> index) {
         List<StockDataInfoDto> stockDataInfos = new ArrayList<>();
 
         for (Integer i : index) {

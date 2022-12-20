@@ -5,5 +5,5 @@ import com.mtg.Motugame.stock.dto.StockDataInfoDto;
 import java.util.List;
 
 public interface StockService {
-    public List<StockDataInfoDto> getStocksPrices(int[] index);
+    public List<StockDataInfoDto> getStocksPrices(List<Integer> index);
 }
