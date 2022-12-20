@@ -15,17 +15,17 @@ import java.util.List;
 public class UserController {
 
     @GetMapping(value = "/users")
-    public List<UserDto> findAllUser(){
+    public ResponseEntity<List<UserDto>> findAllUser(){
         return null;
     }
 
     @PostMapping(value = "/users")
-    public UserDto InsertUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> InsertUser(@RequestBody UserDto userDto){
         return null;
     }
 
     @GetMapping(value = "/users/{id}")
-    public UserDto findUserById(@PathVariable String id){
+    public ResponseEntity<UserDto> findUserById(@PathVariable String id){
        return null;
     }
 
