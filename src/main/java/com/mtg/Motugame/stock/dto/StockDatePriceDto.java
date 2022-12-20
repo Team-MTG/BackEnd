@@ -9,5 +9,6 @@ import java.time.LocalDate;
 @Builder
 public class StockDatePriceDto {
     private LocalDate date;
+
     private Integer price;
 }
