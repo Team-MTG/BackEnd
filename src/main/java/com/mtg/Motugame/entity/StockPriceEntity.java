@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Getter
 @Table(name = "stock_price")
 public class StockPriceEntity {
