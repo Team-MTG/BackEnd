@@ -1,7 +1,6 @@
 package com.mtg.Motugame.user.repository;
 
 import com.mtg.Motugame.entity.UserEntity;
-import org.h2.engine.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,12 +9,15 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
+
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("h2")
 @DataJpaTest
 class UserRepositoryTest {
 
@@ -26,10 +28,13 @@ class UserRepositoryTest {
     @Test
     void findAllUser() {
         //given
+        UserEntity user = user();
 
         //when
+        List<UserEntity> userList = userRepository.findAll();
 
         //then
+        assertThat(userList.size()).isEqualTo(1);
     }
 
     @DisplayName("유저 등록")
