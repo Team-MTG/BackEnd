@@ -30,13 +30,13 @@ public class RankingServiceImpl implements RankingService{
         List<RankResponseDto> list = new ArrayList<>();
 
         int rank=1;
-        for(RankingEntity r : users){
+        for(RankingEntity ranked : users){
             RankResponseDto.builder()
                     .rank(rank++)
-                    .id(r.getId())
-                    .name(r.getName())
-                    .rate(r.getRate())
-                    .totalCash(r.getTotalCash())
+                    .id(ranked.getId())
+                    .name(ranked.getName())
+                    .rate(ranked.getRate())
+                    .totalCash(ranked.getTotalCash())
                     .build();
         }
 
@@ -57,8 +57,8 @@ public class RankingServiceImpl implements RankingService{
         List<RankingEntity> users = rankingRepository.findAll(Sort.by(Sort.Direction.DESC, "totalCash"));
 
         int i=1;
-        for(RankingEntity r : users){
-            if(r.getId() == newRank.getId()){
+        for(RankingEntity ranked : users){
+            if(ranked.getId() == newRank.getId()){
                 RankResponseDto rankResponseDto = RankResponseDto.builder()
                         .id(newRank.getId())
                         .name(newRank.getName())

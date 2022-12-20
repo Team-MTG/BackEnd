@@ -16,12 +16,12 @@ import javax.persistence.*;
 public class RankingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
 
-    private float rate;
+    private Float rate;
 
-    private int totalCash;
+    private Integer totalCash;
 
 }
