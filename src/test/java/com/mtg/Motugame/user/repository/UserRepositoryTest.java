@@ -13,6 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,6 +24,19 @@ class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @DisplayName("특정 유저 조회")
+    @Test
+    void findByUserId() {
+        //given
+        userRepository.save(user());
+
+        //when
+        Optional<UserEntity> findUser = userRepository.findById("qwd5320");
+
+        //then
+        assertThat(findUser.get().getName()).isEqualTo(user().getName());
+    }
 
     @DisplayName("유저 목록 조회")
     @Test
