@@ -1,22 +1,20 @@
 package com.mtg.Motugame.user.service;
 
 import com.mtg.Motugame.entity.UserEntity;
-import com.mtg.Motugame.user.dto.UserDto;
 import com.mtg.Motugame.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImplA implements UserService{
+public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-
+    private static final String NO_DATA_ERROR = "no such data";
     public UserEntity findUser(String id){
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such data"));
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(NO_DATA_ERROR));
 
         return user;
     }

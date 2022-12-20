@@ -2,10 +2,8 @@ package com.mtg.Motugame.user.controller;
 
 import com.mtg.Motugame.entity.UserEntity;
 import com.mtg.Motugame.user.dto.UserDto;
-import com.mtg.Motugame.user.service.UserService;
-import com.mtg.Motugame.user.service.UserServiceImplA;
+import com.mtg.Motugame.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +14,7 @@ import java.util.List;
 @RequestMapping(value = "/api")
 public class UserController {
 
-    private final UserServiceImplA userService;
+    private final UserServiceImpl userService;
 
     @GetMapping(value = "/users")
     public ResponseEntity<List<UserEntity>> findAllUser(){
@@ -33,7 +31,7 @@ public class UserController {
     @GetMapping(value = "/users/{id}")
     public ResponseEntity<UserEntity> findUserById(@PathVariable String id){
         UserEntity userEntity = userService.findUser(id);
-        
+
         return ResponseEntity.ok().body(userEntity);
     }
 
