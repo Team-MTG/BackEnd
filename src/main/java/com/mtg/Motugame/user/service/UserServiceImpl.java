@@ -23,6 +23,11 @@ public class UserServiceImpl implements UserService{
 
     public List<UserEntity> findAllUser(){
         List<UserEntity> users = userRepository.findAll();
+
+        if(users.isEmpty()){
+            throw new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR);
+        }
+
         return users;
     }
 
