@@ -15,7 +15,6 @@ public class UserServiceImpl implements UserService{
     private static final String NO_DATA_ERROR = "no such data";
     public UserEntity findUser(String id){
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(NO_DATA_ERROR));
-
         return user;
     }
 
