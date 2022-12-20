@@ -17,7 +17,6 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     public UserEntity findUser(String id){
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
-
         return user;
     }
 
