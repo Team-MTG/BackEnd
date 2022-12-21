@@ -31,19 +31,18 @@ public class RankingServiceImpl implements RankingService{
 
         int rank=1;
         for(RankingEntity ranked : users){
-            RankResponseDto.builder()
+            list.add(RankResponseDto.builder()
                     .rank(rank++)
                     .id(ranked.getId())
                     .name(ranked.getName())
                     .rate(ranked.getRate())
                     .totalCash(ranked.getTotalCash())
-                    .build();
+                    .build());
         }
 
         return list;
     }
 
-    @Transactional
     public RankResponseDto insertRank(RankRequestDto rankRequestDto){
 
         RankingEntity ranking = RankingEntity.builder()
