@@ -3,7 +3,7 @@ package com.mtg.Motugame.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class StockPriceEntity {
     @JoinColumn(name = "stock_code")
     private StockInfoEntity stockInfo;
 
-    private Date date;
+    private LocalDate date;
 
     private Integer open;
 

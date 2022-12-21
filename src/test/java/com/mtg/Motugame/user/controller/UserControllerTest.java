@@ -2,6 +2,9 @@ package com.mtg.Motugame.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mtg.Motugame.entity.UserEntity;
+
+import com.mtg.Motugame.stock.service.StockServiceImpl;
+
 import com.mtg.Motugame.user.dto.UserDto;
 import com.mtg.Motugame.user.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest
+
+@WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
 class UserControllerTest {
 
