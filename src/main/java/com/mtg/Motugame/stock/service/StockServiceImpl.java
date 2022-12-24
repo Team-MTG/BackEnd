@@ -18,9 +18,11 @@ public class StockServiceImpl implements StockService {
     public List<StockDataInfoDto> getStocksPrices(List<Integer> index) {
         List<StockDataInfoDto> stockDataInfos = new ArrayList<>();
 
+        List<StockInfoEntity> stockInfoEntitys = stockInfoRepository.findAll();
         for (Integer i : index) {
+
+
             //해당 주식코드의 entity를 찾음
-            List<StockInfoEntity> stockInfoEntitys = stockInfoRepository.findAll();
             StockInfoEntity stockInfoEntity = stockInfoEntitys.get(i);
 
             //해당주식의 코드, 이름, 가격리스트 저장
