@@ -36,7 +36,7 @@ class StockControllerTest {
 
     @Test
     @DisplayName("랜덤주식 데이터 가져오기 성공")
-    public void GetRandomStockSuccess() throws Exception{
+    public void getRandomStockSuccess() throws Exception{
         //given
         //인덱스 번호 지정
         List<Integer> indices = new ArrayList<>();
@@ -74,7 +74,7 @@ class StockControllerTest {
 
     @Test
     @DisplayName("랜덤주식 데이터 가져오기 실패")
-    public void GetRandomStockfail() throws Exception{
+    public void getRandomStockfail() throws Exception{
         //given
 
         //랜덤 인덱스 번호 지정
