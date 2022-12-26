@@ -10,7 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Getter
 @Table(name = "stock_info")
 public class StockInfoEntity {
