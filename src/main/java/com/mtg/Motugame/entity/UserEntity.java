@@ -14,18 +14,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "USER")
-public class UserEntity {
+public class UserEntity extends CreatedTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String nickname;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String username;
 
-    @Column(name = "login_id")
+    @Column(name = "login_id", nullable = false)
     private String loginId;
 
 }
