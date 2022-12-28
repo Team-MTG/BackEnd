@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "USER")
+@Table(name = "USER", uniqueConstraints = {@UniqueConstraint(name = "UNIQUE_NICKNAME_AND_LOGIN_ID",columnNames = {"nickname", "login_id"})})
 public class UserEntity extends CreatedTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
