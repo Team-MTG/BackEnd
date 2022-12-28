@@ -22,4 +22,7 @@ public class StockInfoEntity {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "stockInfo")
     List<StockPriceEntity> stockPriceEntities = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "stockInfo")
+    List<ScoreRecordEntity> scoreRecords = new ArrayList<>();
 }
