@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,5 +29,8 @@ public class UserEntity extends CreatedTimeEntity {
 
     @Column(name = "login_id", nullable = false, length = 40)
     private String loginId;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    List<TotalScoreEntity> totalScores = new ArrayList<>();
 
 }
