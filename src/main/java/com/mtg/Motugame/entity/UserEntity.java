@@ -25,7 +25,7 @@ public class UserEntity extends CreatedTimeEntity {
     @Column(length = 20, nullable = false)
     private String username;
 
-    @Column(name = "login_id", nullable = false)
+    @Column(name = "login_id", nullable = false, length = 40)
     private String loginId;
 
 }
