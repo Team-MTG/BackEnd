@@ -6,11 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-import javax.persistence.Column;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -20,10 +16,16 @@ import javax.persistence.Table;
 @Table(name = "USER")
 public class UserEntity {
 
-    @Id
-    private String id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String name;
+    @Column(length = 20)
+    private String nickname;
 
-    private String gameId;
+    @Column(length = 20)
+    private String username;
+
+    @Column(name = "login_id")
+    private String loginId;
+
 }
