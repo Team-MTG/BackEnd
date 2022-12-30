@@ -46,13 +46,13 @@ class RankingControllerTest {
 
     @Test
     @DisplayName("랭킹 목록 보여주기 성공")
-    public void getRank_success() throws Exception{
+    public void getRankSuccess() throws Exception {
         //given
         List<RankResponseDto> rankList = new ArrayList<>();
-        rankList.add(new RankResponseDto((long)1, "jiwon", 1,(float)40, 9000000));
-        rankList.add(new  RankResponseDto((long)2, "gwon", 2,(float)30, 8000000));
-        rankList.add(new  RankResponseDto((long)3, "minsun", 3,(float)20, 7000000));
-        rankList.add(new  RankResponseDto((long)4, "sun", 4,(float)10, 6000000));
+        rankList.add(new RankResponseDto((1L, "jiwon", 1, 40F, 9000000));
+        rankList.add(new RankResponseDto((long) 2L, "gwon", 2, 30F, 8000000));
+        rankList.add(new RankResponseDto((long) 3L, "minsun", 3, 20F, 7000000));
+        rankList.add(new RankResponseDto((long) 4L, "sun", 4, 10F, 6000000));
         given(rankingService.getRank()).willReturn(rankList);
 
         //when
@@ -68,7 +68,7 @@ class RankingControllerTest {
 
     @Test
     @DisplayName("랭킹 목록 보여주기 실패")
-    public void getRank_fail() throws Exception {
+    public void getRankFail() throws Exception {
 
         //given
         given(rankingService.getRank()).willThrow(new IllegalArgumentException());
@@ -85,18 +85,18 @@ class RankingControllerTest {
 
     @Test
     @DisplayName("랭킹 등록 성공")
-    public void insertRank_success() throws Exception{
+    public void insertRankSuccess() throws Exception {
         //given
         RankRequestDto rankRequestDto = RankRequestDto.builder()
                 .name("jiwon")
-                .rate(30)
+                .rate(30F)
                 .totalCash(5000000)
                 .build();
 
         RankResponseDto rankResponseDto = RankResponseDto.builder()
-                .id((long)1)
+                .id((long) 1)
                 .name("jiwon")
-                .rate((float)30)
+                .rate(30F)
                 .totalCash(5000000)
                 .rank(1)
                 .build();
@@ -106,13 +106,13 @@ class RankingControllerTest {
         String param = objectMapper.writeValueAsString(rankRequestDto);
         //when
         mockMvc.perform(post("/api/rankings")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(param))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(param))
                 .andExpect(status().isOk())
                 .andDo(print());
 
         //then
-        verify(rankingService,atLeastOnce()).insertRank(any());
+        verify(rankingService, atLeastOnce()).insertRank(any());
     }
 }
