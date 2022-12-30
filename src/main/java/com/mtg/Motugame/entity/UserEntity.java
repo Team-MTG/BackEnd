@@ -24,10 +24,10 @@ public class UserEntity extends CreatedTimeEntity {
     @Column(length = 20, nullable = false)
     private String nickname;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private String username;
 
-    @Column(name = "login_id", nullable = false, length = 40)
+    @Column(name = "login_id", length = 40)
     private String loginId;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
