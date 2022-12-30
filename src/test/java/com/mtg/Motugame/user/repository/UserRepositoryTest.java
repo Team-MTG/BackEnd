@@ -73,4 +73,17 @@ class UserRepositoryTest {
                 .loginId("haechan")
                 .build();
     }
+
+    @DisplayName("createDate가 제대로 저장이되는지")
+    @Test
+    void checkCreateDate() {
+        //given
+        UserEntity user = user();
+
+        //when
+        UserEntity savedUser = userRepository.save(user);
+
+        //then
+        assertNotNull(savedUser.getCreatedAt());
+    }
 }
