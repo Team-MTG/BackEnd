@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -40,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
+@MockBean(JpaMetamodelMappingContext.class)
 class UserControllerTest {
 
     @MockBean
@@ -55,20 +57,27 @@ class UserControllerTest {
     @DisplayName("모든유저성공")
     public void findAllUser_success() throws Exception {
         //given
-        List<UserEntity> userList = new ArrayList<>();
-        userList.add(new UserEntity("해찬123", "해찬", "광운대1짱"));
-        userList.add(new UserEntity("강호123", "강호", "광운대2짱"));
-        userList.add(new UserEntity("서진123", "서진", "광운대-1짱"));
-        userList.add(new UserEntity("지원123", "지원", "광운대0짱"));
+        List<UserEntity> userList = List.of(
+                UserEntity.builder()
+                        .loginId("haechan")
+                        .nickname("해찬123")
+                        .username("유해찬")
+                        .build(),
+                UserEntity.builder()
+                        .loginId("kangho")
+                        .nickname("강호123")
+                        .username("임강호")
+                        .build()
+        );
         given(userService.findAllUser()).willReturn(userList);
 
         //when
         mockMvc.perform(
                         get("/api/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id").exists())
-                .andExpect(jsonPath("$.[0].name").exists())
-                .andExpect(jsonPath("$.[0].gameId").exists())
+                .andExpect(jsonPath("$.[0].nickname").exists())
+                .andExpect(jsonPath("$.[0].username").exists())
+                .andExpect(jsonPath("$.[0].loginId").exists())
                 .andDo(print());
 
         //then
@@ -79,10 +88,6 @@ class UserControllerTest {
     @Test
     @DisplayName("모든유저실패")
     public void findAllUser_fail() throws Exception {
-
-        // 1. userRespoitory.findAll mock을 통해 NULL을 반환하게 만든다.
-        // 2. mvc를 통해서 get요청을 보낸다.
-        // 3. 이러면 badrequest보내기 때문에 이를 확인한다.
 
         //given
         given(userService.findAllUser()).willThrow(new IllegalArgumentException());
@@ -96,15 +101,15 @@ class UserControllerTest {
         //then
         verify(userService, atLeastOnce()).findAllUser();
     }
-    
+
     @Test
     @DisplayName("유저 찾기 성공")
     public void findUser_success() throws Exception {
         //given
         UserEntity user = UserEntity.builder()
-                .id("해찬123")
-                .name("유해찬")
-                .gameId("해찬")
+                .username("유해찬")
+                .nickname("해찬123")
+                .loginId("haechan")
                 .build();
         given(userService.findUser(anyString())).willReturn(user);
 
@@ -112,9 +117,9 @@ class UserControllerTest {
         mockMvc.perform(
                         get("/api/users/gwe123"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.name").exists())
-                .andExpect(jsonPath("$.gameId").exists())
+                .andExpect(jsonPath("$.username").exists())
+                .andExpect(jsonPath("$.nickname").exists())
+                .andExpect(jsonPath("$.loginId").exists())
                 .andDo(print());
 
         //then
@@ -141,15 +146,15 @@ class UserControllerTest {
     public void insertUser_success() throws Exception {
         //given
         UserDto userDto = UserDto.builder()
-                .id("해찬123")
-                .name("유해찬")
-                .gameId("해찬")
+                .username("유해찬")
+                .nickname("해찬123")
+                .loginId("haechan")
                 .build();
 
         UserEntity userEntity = UserEntity.builder()
-                .id("해찬123")
-                .name("유해찬")
-                .gameId("해찬")
+                .username("유해찬")
+                .nickname("해찬123")
+                .loginId("haechan")
                 .build();
 
         given(userService.insertUser(any())).willReturn(userEntity);
@@ -173,9 +178,9 @@ class UserControllerTest {
 
         //given
         UserDto userDto = UserDto.builder()
-                .id("해찬123")
-                .name("유해찬")
-                .gameId("해찬")
+                .username("유해찬")
+                .nickname("해찬123")
+                .loginId("haechan")
                 .build();
         given(userService.insertUser(any())).willThrow(new IllegalArgumentException());
         String param = objectMapper.writeValueAsString(userDto);

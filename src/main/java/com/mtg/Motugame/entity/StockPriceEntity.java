@@ -3,6 +3,7 @@ package com.mtg.Motugame.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -22,13 +23,18 @@ public class StockPriceEntity {
 
     private LocalDate date;
 
-    private Integer open;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal open;
 
-    private Integer high;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal high;
 
-    private Integer low;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal low;
 
-    private Integer close;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal close;
 
-    private Float changePrice;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal changePrice;
 }

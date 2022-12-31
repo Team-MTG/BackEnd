@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,10 +48,10 @@ class StockControllerTest {
         List<StockDatePriceDto> stockDatePriceDtoList = new ArrayList<>();
         stockDatePriceDtoList.add(StockDatePriceDto.builder()
                 .date(LocalDate.now())
-                .price(10000).build());
+                .price(new BigDecimal(10000)).build());
         stockDatePriceDtoList.add(StockDatePriceDto.builder()
                 .date(LocalDate.now().minusDays(1))
-                .price(20000).build());
+                .price(new BigDecimal(20000)).build());
 
         //요청 데이터 (주식코드,주식이름) + 주식가격리스트
         List<StockDataInfoDto> stockDataInfoDtoList = new ArrayList<>();
@@ -86,10 +87,10 @@ class StockControllerTest {
         List<StockDatePriceDto> stockDatePriceDtoList = new ArrayList<>();
         stockDatePriceDtoList.add(StockDatePriceDto.builder()
                 .date(LocalDate.now())
-                .price(10000).build());
+                .price(new BigDecimal(10000)).build());
         stockDatePriceDtoList.add(StockDatePriceDto.builder()
                 .date(LocalDate.now().minusDays(1))
-                .price(20000).build());
+                .price(new BigDecimal(20000)).build());
 
         //요청 데이터 (주식코드,주식이름) + 주식가격리스트
         List<StockDataInfoDto> stockDataInfoDtoList = new ArrayList<>();
