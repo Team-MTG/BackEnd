@@ -38,7 +38,6 @@ public class RankingServiceImpl implements RankingService{
                     .rate(ranked.getRate())
                     .totalCash(ranked.getTotalCash())
                     .build());
-
         }
 
         return list;
