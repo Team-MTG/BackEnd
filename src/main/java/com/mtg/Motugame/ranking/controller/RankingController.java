@@ -2,14 +2,10 @@ package com.mtg.Motugame.ranking.controller;
 
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
-import com.mtg.Motugame.ranking.dto.TotalInfoDto;
-import com.mtg.Motugame.ranking.service.RankingService;
 import com.mtg.Motugame.ranking.service.RankingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +16,7 @@ public class RankingController {
 
     @PostMapping("/rankings")
     public ResponseEntity<RankResponseDto> gameResult(@RequestBody RankRequestDto rankRequestDto){
-        rankingService.recordScore(rankRequestDto);
+        rankingService.saveScore(rankRequestDto);
 
         RankResponseDto rankResponseDto = RankResponseDto.builder()
                 .nickname(rankRequestDto.getNickname())

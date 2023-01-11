@@ -12,13 +12,16 @@ import com.mtg.Motugame.ranking.repository.TotalScoreRepository;
 import com.mtg.Motugame.stock.repository.StockInfoRepository;
 import com.mtg.Motugame.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,19 +36,10 @@ public class RankingServiceImpl implements RankingService {
     private final StockInfoRepository stockInfoRepository;
 
 
-    public void recordScore(RankRequestDto rankRequestDto) {
-
+    public void saveScore(RankRequestDto rankRequestDto) {
         List<ScoreInfo> scoreInfoList = rankRequestDto.getScoreInfoList();
 
-        if (!userRepository.existsByNickname(rankRequestDto.getNickname())) {
-            userRepository.save(UserEntity.builder()
-                    .nickname(rankRequestDto.getNickname())
-                    .build());
-        }
-
-        UserEntity userEntity = userRepository.findByNickname(rankRequestDto.getNickname())
-                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
-
+        UserEntity userEntity = saveUser(rankRequestDto);
 
         TotalScoreEntity totalScore = totalScoreRepository.save(TotalScoreEntity.builder()
                 .profit(rankRequestDto.getTotalProfit())
@@ -64,16 +58,24 @@ public class RankingServiceImpl implements RankingService {
                     .yield(scoreInfo.getYield())
                     .build());
         }
-
-        return;
     }
 
-    public Long getRank(String nickname, BigDecimal profit){
+    private UserEntity saveUser(RankRequestDto rankRequestDto) {
+        Optional<UserEntity> findData = userRepository.findByNickname(rankRequestDto.getNickname());
+        if (findData.isEmpty()) {
+            return userRepository.save(UserEntity.builder()
+                    .nickname(rankRequestDto.getNickname())
+                    .build());
+        }
+        return findData.get();
+    }
+
+    public Long getRank(String nickname, BigDecimal profit) {
         List<TotalScoreEntity> rankList = totalScoreRepository.findAll(Sort.by(Sort.Direction.DESC, "profit"));
         Long rank = 1L;
 
         for (TotalScoreEntity totalScoreEntity : rankList) {
-            if(nickname.equals(totalScoreEntity.getUser().getNickname())
+            if (nickname.equals(totalScoreEntity.getUser().getNickname())
                     && profit.equals(totalScoreEntity.getProfit()))
                 break;
 
