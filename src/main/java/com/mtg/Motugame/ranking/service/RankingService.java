@@ -2,10 +2,10 @@ package com.mtg.Motugame.ranking.service;
 
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
+import com.mtg.Motugame.ranking.dto.TotalInfoDto;
 
 import java.util.List;
 
 public interface RankingService {
-    public List<RankResponseDto> getRank();
-    public RankResponseDto insertRank(RankRequestDto rankRequestDto);
+    public TotalInfoDto recordScore(RankRequestDto rankRequestDto);
 }

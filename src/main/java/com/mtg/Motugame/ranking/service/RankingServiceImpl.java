@@ -1,75 +1,85 @@
 package com.mtg.Motugame.ranking.service;
 
-import com.mtg.Motugame.entity.RankingEntity;
-import com.mtg.Motugame.entity.UserEntity;
+import com.mtg.Motugame.entity.*;
 import com.mtg.Motugame.exception.ExceptionMessage;
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
+import com.mtg.Motugame.ranking.dto.ScoreInfo;
+import com.mtg.Motugame.ranking.dto.TotalInfoDto;
 import com.mtg.Motugame.ranking.repository.RankingRepository;
+import com.mtg.Motugame.ranking.repository.ScoreRecordRepository;
+import com.mtg.Motugame.ranking.repository.TotalScoreRepository;
+import com.mtg.Motugame.stock.repository.StockInfoRepository;
+import com.mtg.Motugame.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RankingServiceImpl implements RankingService{
+public class RankingServiceImpl implements RankingService {
 
-    private final RankingRepository rankingRepository;
+    private final ScoreRecordRepository scoreRecordRepository;
 
-    public List<RankResponseDto> getRank(){
-        List<RankingEntity> users = rankingRepository.findAll(Sort.by(Sort.Direction.DESC, "totalCash"));
+    private final TotalScoreRepository totalScoreRepository;
 
-        if(users.isEmpty()){
-            throw new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR);
-        }
+    private final UserRepository userRepository;
 
-        List<RankResponseDto> list = new ArrayList<>();
+    private final StockInfoRepository stockInfoRepository;
 
-        int rank=1;
-        for(RankingEntity ranked : users){
-            list.add(RankResponseDto.builder()
-                    .rank(rank++)
-                    .id(ranked.getId())
-                    .name(ranked.getName())
-                    .rate(ranked.getRate())
-                    .totalCash(ranked.getTotalCash())
+
+    public TotalInfoDto recordScore(RankRequestDto rankRequestDto) {
+
+        List<ScoreInfo> scoreInfoList = rankRequestDto.getScoreInfoList();
+
+        if (!userRepository.existsByNickname(rankRequestDto.getNickname())) {
+            userRepository.save(UserEntity.builder()
+                    .nickname(rankRequestDto.getNickname())
                     .build());
         }
 
-        return list;
-    }
+        UserEntity userEntity = userRepository.findByNickname(rankRequestDto.getNickname())
+                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
 
-    public RankResponseDto insertRank(RankRequestDto rankRequestDto){
 
-        RankingEntity ranking = RankingEntity.builder()
-                .name(rankRequestDto.getName())
-                .rate(rankRequestDto.getRate())
-                .totalCash(rankRequestDto.getTotalCash())
-                .build();
+        TotalScoreEntity totalScore = totalScoreRepository.save(TotalScoreEntity.builder()
+                .profit(rankRequestDto.getTotalProfit())
+                .totalYield(rankRequestDto.getTotalYield())
+                .user(userEntity)
+                .build());
 
-        RankingEntity newRank = rankingRepository.save(ranking);
+        for (ScoreInfo scoreInfo : scoreInfoList) {
+            StockInfoEntity stockInfoEntity = stockInfoRepository.findById(scoreInfo.getStockCode())
+                    .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
 
-        List<RankingEntity> users = rankingRepository.findAll(Sort.by(Sort.Direction.DESC, "totalCash"));
-
-        int i=1;
-        for(RankingEntity ranked : users){
-            if(ranked.getId() == newRank.getId()){
-                RankResponseDto rankResponseDto = RankResponseDto.builder()
-                        .id(newRank.getId())
-                        .name(newRank.getName())
-                        .rank(i)
-                        .totalCash(newRank.getTotalCash())
-                        .rate(newRank.getRate())
-                        .build();
-                return rankResponseDto;
-            }
-            i++;
+            scoreRecordRepository.save(ScoreRecordEntity.builder()
+                    .totalScore(totalScore)
+                    .stockInfo(stockInfoEntity)
+                    .profit(scoreInfo.getProfit())
+                    .yield(scoreInfo.getYield())
+                    .build());
         }
 
-        return null;
+        List<TotalScoreEntity> rankList = totalScoreRepository.findAll(Sort.by(Sort.Direction.DESC, "profit"));
+        Long rank = 1L;
+
+        for (TotalScoreEntity totalScoreEntity : rankList) {
+            if(totalScoreEntity.getUser().getNickname().equals(rankRequestDto.getNickname())
+                    && rankRequestDto.getTotalProfit().equals(totalScoreEntity.getProfit()))
+                break;
+
+            rank++;
+        }
+
+        return TotalInfoDto.builder()
+                .profit(rankRequestDto.getTotalProfit())
+                .yield(rankRequestDto.getTotalYield())
+                .rank(rank).nickname(rankRequestDto.getNickname()).build();
     }
+
 }

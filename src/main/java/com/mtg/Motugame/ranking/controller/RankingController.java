@@ -2,6 +2,7 @@ package com.mtg.Motugame.ranking.controller;
 
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
+import com.mtg.Motugame.ranking.dto.TotalInfoDto;
 import com.mtg.Motugame.ranking.service.RankingService;
 import com.mtg.Motugame.ranking.service.RankingServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +19,15 @@ public class RankingController {
     private final RankingServiceImpl rankingService;
 
     @PostMapping("/rankings")
-    public ResponseEntity<RankResponseDto> insertRank(@RequestBody RankRequestDto rankRequestDto){
-        RankResponseDto rankResponseDto = rankingService.insertRank(rankRequestDto);
-
-        return ResponseEntity.ok().body(rankResponseDto);
+    public ResponseEntity<TotalInfoDto> gameResult(@RequestBody RankRequestDto rankRequestDto){
+        TotalInfoDto totalInfoDto = rankingService.recordScore(rankRequestDto);
+        return ResponseEntity.ok().body(totalInfoDto);
     }
 
-    @GetMapping("/rankings")
-    public ResponseEntity<List<RankResponseDto>> getRank(){
-        List<RankResponseDto> list = rankingService.getRank();
-
-        return ResponseEntity.ok().body(list);
-    }
+//    @GetMapping("/rankings")
+//    public ResponseEntity<List<RankResponseDto>> getRank(){
+//        List<RankResponseDto> list = rankingService.getRank();
+//
+//        return ResponseEntity.ok().body(list);
+//    }
 }
