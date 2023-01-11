@@ -71,7 +71,7 @@ public class RankingServiceImpl implements RankingService {
     }
 
     public Long getRank(String nickname, BigDecimal profit) {
-        List<TotalScoreEntity> rankList = totalScoreRepository.findAll(Sort.by(Sort.Direction.DESC, "profit"));
+        List<TotalScoreEntity> rankList = totalScoreRepository.findAllByOrderByProfitDesc();
         Long rank = 1L;
 
         for (TotalScoreEntity totalScoreEntity : rankList) {
