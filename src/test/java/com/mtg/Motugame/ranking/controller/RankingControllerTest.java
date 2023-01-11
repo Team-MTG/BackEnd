@@ -49,10 +49,10 @@ class RankingControllerTest {
     public void getRankSuccess() throws Exception {
         //given
         List<RankResponseDto> rankList = new ArrayList<>();
-        rankList.add(new RankResponseDto((1L, "jiwon", 1, 40F, 9000000));
-        rankList.add(new RankResponseDto((long) 2L, "gwon", 2, 30F, 8000000));
-        rankList.add(new RankResponseDto((long) 3L, "minsun", 3, 20F, 7000000));
-        rankList.add(new RankResponseDto((long) 4L, "sun", 4, 10F, 6000000));
+        rankList.add(new RankResponseDto(1L, "jiwon", 1, 40F, 9000000));
+        rankList.add(new RankResponseDto(2L, "gwon", 2, 30F, 8000000));
+        rankList.add(new RankResponseDto(3L, "minsun", 3, 20F, 7000000));
+        rankList.add(new RankResponseDto(4L, "sun", 4, 10F, 6000000));
         given(rankingService.getRank()).willReturn(rankList);
 
         //when

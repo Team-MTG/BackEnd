@@ -3,11 +3,9 @@ package com.mtg.Motugame.stock.controller;
 import com.mtg.Motugame.stock.dto.StockDataInfoDto;
 import com.mtg.Motugame.stock.service.StockServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +19,19 @@ public class StockController {
     @GetMapping("/stocks")
     public ResponseEntity<List<StockDataInfoDto>> findRandStockPriceInfo(@RequestParam("index") List<Integer> index) {
         List<StockDataInfoDto> stockDataInfos = stockRepository.getStocksPrices(index);
-        return ResponseEntity.ok().body(stockDataInfos);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Total-Count", Integer.toString(stockDataInfos.size()));
 
+        return ResponseEntity.ok().headers(headers).body(stockDataInfos);
+    }
+
+    //몇개의 주식 데이터가 존재하는지 헤더에만 담아서 반환하는 메서드
+    @RequestMapping(value = "/stocks", method = RequestMethod.HEAD)
+    public ResponseEntity<Void> findHeadRandStockPriceInfo(@RequestParam("index") List<Integer> index) {
+        List<StockDataInfoDto> stockDataInfos = stockRepository.getStocksPrices(index);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Total-Count", Integer.toString(stockDataInfos.size()));
+
+        return ResponseEntity.ok().headers(headers).body(null);
     }
 }
