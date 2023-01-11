@@ -3,7 +3,6 @@ package com.mtg.Motugame.stock.service;
 import com.mtg.Motugame.entity.StockInfoEntity;
 import com.mtg.Motugame.entity.StockPriceEntity;
 import com.mtg.Motugame.stock.dto.StockDataInfoDto;
-import com.mtg.Motugame.stock.dto.StockDatePriceDto;
 import com.mtg.Motugame.stock.repository.StockInfoRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +38,44 @@ class StockServiceImplTest {
 
         //then
         Assertions.assertThat(stocksPrices.size()).isEqualTo(2);
+    }
+
+    @DisplayName("주식개수 가져오기 성공")
+    @Test
+    void getStocksInfoSuccess() {
+        //given
+        given(stockInfoRepository.findAll()).willReturn(stockInfoList());
+
+        //when
+        int size = stockService.getStocksInfo();
+
+        //then
+        Assertions.assertThat(size).isEqualTo(20);
+    }
+
+    @DisplayName("주식개수 가져오기 실패")
+    @Test
+    void getStocksInfoFail() {
+        //given
+        given(stockInfoRepository.findAll()).willReturn(stockInfoList());
+
+        //when
+        int size = stockService.getStocksInfo();
+
+        //then
+        Assertions.assertThat(size).isEqualTo(19);
+    }
+
+    private List<StockInfoEntity> stockInfoList(){
+        List<StockInfoEntity> stockInfoEntityList = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            stockInfoEntityList.add(StockInfoEntity.builder()
+                    .stockCode(Integer.toString(i))
+                    .stockName("test name")
+                    .build()
+            );
+        }
+        return stockInfoEntityList;
     }
 
     private List<StockInfoEntity> stockInfoEntityList() {
