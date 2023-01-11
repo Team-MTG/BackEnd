@@ -174,12 +174,12 @@ class RankingServiceImplTest {
                 );
 
         //when
-        Long ranking = rankingService.getRank(RankRequestDto.builder().
+        int ranking = rankingService.getRank(RankRequestDto.builder().
                         nickname("박지원").totalProfit(new BigDecimal(74.2)).build())
                 .getRank();
 
         //then
-        Assertions.assertThat(ranking).isEqualTo(1L);
+        Assertions.assertThat(ranking).isEqualTo(1);
     }
 
     @Test
@@ -205,12 +205,12 @@ class RankingServiceImplTest {
                 );
 
         //when
-        Long ranking = rankingService.getRank(RankRequestDto.builder().
+        int ranking = rankingService.getRank(RankRequestDto.builder().
                 nickname("박지원").totalProfit(new BigDecimal(54.2)).build())
                 .getRank();
 
         //then
-        Assertions.assertThat(ranking).isEqualTo(2L);
+        Assertions.assertThat(ranking).isEqualTo(2);
     }
 
     private RankRequestDto getRecordScoreRequest() {

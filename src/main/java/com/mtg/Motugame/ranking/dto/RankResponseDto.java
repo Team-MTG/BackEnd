@@ -12,7 +12,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RankResponseDto {
-    private Long rank;
+
+    private Integer rank;
 
     private String nickname;
 

@@ -58,7 +58,7 @@ class RankingControllerTest {
                 )).build();
 
         RankResponseDto response = RankResponseDto.builder()
-                .rank(1L)
+                .rank(1)
                 .nickname("jiwon")
                 .profit(new BigDecimal("54.2"))
                 .yield(new BigDecimal(15315147))

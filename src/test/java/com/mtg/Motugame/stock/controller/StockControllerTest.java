@@ -1,5 +1,6 @@
 package com.mtg.Motugame.stock.controller;
 
+import com.mtg.Motugame.entity.StockInfoEntity;
 import com.mtg.Motugame.stock.dto.StockDataInfoDto;
 import com.mtg.Motugame.stock.dto.StockDatePriceDto;
 import com.mtg.Motugame.stock.service.StockServiceImpl;
@@ -16,9 +17,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -110,5 +111,37 @@ class StockControllerTest {
                 .andDo(print());
         //then
         verify(stockService, atLeastOnce()).getStocksPrices(Arrays.asList(1,27));//정상적으로 동작했는지 검증
+    }
+
+    @Test
+    @DisplayName("헤더에 주식데이터 개수 담기 성공")
+    public void getHeadRandomStockSuccess() throws Exception{
+        //given
+
+        //요청 데이터 (주식코드,주식이름) + 주식가격리스트
+        List<StockInfoEntity> stockDataInfoList = stockInfoList();
+
+        given(stockService.getStocksInfo()).willReturn(stockDataInfoList.size());
+
+        //when
+        mockMvc.perform(head("/api/stocks")) //request의 헤더에 추가하는 것이다.
+                .andExpect(header().exists("X-Total-Count"))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        //then
+        verify(stockService).getStocksInfo();
+    }
+
+    private List<StockInfoEntity> stockInfoList(){
+        List<StockInfoEntity> stockInfoEntityList = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            stockInfoEntityList.add(StockInfoEntity.builder()
+                    .stockCode(Integer.toString(i))
+                    .stockName("test name")
+                    .build()
+            );
+        }
+        return stockInfoEntityList;
     }
 }
