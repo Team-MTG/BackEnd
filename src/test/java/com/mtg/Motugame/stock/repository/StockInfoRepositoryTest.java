@@ -52,7 +52,7 @@ class StockInfoRepositoryTest {
         stockInfoRepository.save(stockInfo2);
 
         //when
-        List<StockInfoEntity> findStocks = stockInfoRepository.findAll(Sort.by(Sort.Direction.ASC, "stock_name"));
+        List<StockInfoEntity> findStocks = stockInfoRepository.findAllByOrderByStockCode();
 
         //then
         Assertions.assertThat(findStocks.get(0).getStockName()).isEqualTo("SK하이닉스");
