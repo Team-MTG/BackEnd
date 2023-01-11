@@ -1,6 +1,7 @@
 package com.mtg.Motugame.ranking.service;
 
 import com.mtg.Motugame.entity.*;
+import com.mtg.Motugame.exception.ExceptionMessage;
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
 import com.mtg.Motugame.ranking.dto.ScoreInfo;
@@ -9,6 +10,7 @@ import com.mtg.Motugame.ranking.repository.ScoreRecordRepository;
 import com.mtg.Motugame.ranking.repository.TotalScoreRepository;
 import com.mtg.Motugame.stock.repository.StockInfoRepository;
 import com.mtg.Motugame.user.repository.UserRepository;
+import org.apache.catalina.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -125,6 +127,29 @@ class RankingServiceImplTest {
         rankingService.saveScore(request);
     }
 
+    @Test
+    @DisplayName("stock를 확인할 때, stock 데이터가 없는 경우")
+    void notExistStockData() {
+        RankRequestDto rankRequest = getRecordScoreRequest();
+
+        given(userRepository.findByNickname(any())).willReturn(
+                Optional.of(UserEntity.builder()
+                        .nickname("김김김").build()));
+
+        given(totalScoreRepository.save(any()))
+                .willReturn(TotalScoreEntity.builder()
+                        .profit(new BigDecimal(43.4))
+                        .totalYield(new BigDecimal(102402))
+                        .build());
+
+        given(stockInfoRepository.findById(any()))
+                .willReturn(Optional.ofNullable(null));
+
+        Assertions.assertThatThrownBy(()->{
+            rankingService.saveScore(rankRequest);
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(ExceptionMessage.NO_DATA_ERROR);
+    }
 
 //    @Test
 //    @DisplayName("랭킹 목록 가져오기")
