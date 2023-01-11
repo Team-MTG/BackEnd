@@ -174,7 +174,9 @@ class RankingServiceImplTest {
                 );
 
         //when
-        Long ranking = rankingService.getRank("박지원", new BigDecimal(74.2));
+        Long ranking = rankingService.getRank(RankRequestDto.builder().
+                        nickname("박지원").totalProfit(new BigDecimal(74.2)).build())
+                .getRank();
 
         //then
         Assertions.assertThat(ranking).isEqualTo(1L);
@@ -203,7 +205,9 @@ class RankingServiceImplTest {
                 );
 
         //when
-        Long ranking = rankingService.getRank("박지원", new BigDecimal(54.2));
+        Long ranking = rankingService.getRank(RankRequestDto.builder().
+                nickname("박지원").totalProfit(new BigDecimal(54.2)).build())
+                .getRank();
 
         //then
         Assertions.assertThat(ranking).isEqualTo(2L);

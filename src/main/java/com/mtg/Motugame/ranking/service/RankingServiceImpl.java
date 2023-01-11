@@ -60,6 +60,16 @@ public class RankingServiceImpl implements RankingService {
         }
     }
 
+    @Override
+    public RankResponseDto getRank(RankRequestDto rankRequestDto) {
+        return RankResponseDto.builder()
+                .nickname(rankRequestDto.getNickname())
+                .profit(rankRequestDto.getTotalProfit())
+                .yield(rankRequestDto.getTotalYield())
+                .rank(findRank(rankRequestDto.getNickname(), rankRequestDto.getTotalProfit()))
+                .build();
+    }
+
     private UserEntity saveUser(RankRequestDto rankRequestDto) {
         Optional<UserEntity> findData = userRepository.findByNickname(rankRequestDto.getNickname());
         if (findData.isEmpty()) {
@@ -70,7 +80,7 @@ public class RankingServiceImpl implements RankingService {
         return findData.get();
     }
 
-    public Long getRank(String nickname, BigDecimal profit) {
+    public Long findRank(String nickname, BigDecimal profit) {
         List<TotalScoreEntity> rankList = totalScoreRepository.findAllByOrderByProfitDesc();
         Long rank = 1L;
 

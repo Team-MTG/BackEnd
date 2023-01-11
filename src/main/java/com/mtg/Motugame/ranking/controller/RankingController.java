@@ -18,20 +18,7 @@ public class RankingController {
     public ResponseEntity<RankResponseDto> gameResult(@RequestBody RankRequestDto rankRequestDto){
         rankingService.saveScore(rankRequestDto);
 
-        RankResponseDto rankResponseDto = RankResponseDto.builder()
-                .nickname(rankRequestDto.getNickname())
-                .profit(rankRequestDto.getTotalProfit())
-                .yield(rankRequestDto.getTotalYield())
-                .rank(rankingService.getRank(rankRequestDto.getNickname(),rankRequestDto.getTotalProfit()))
-                .build();
-
-        return ResponseEntity.ok().body(rankResponseDto);
+        return ResponseEntity.ok().body(rankingService.getRank(rankRequestDto));
     }
 
-//    @GetMapping("/rankings")
-//    public ResponseEntity<List<RankResponseDto>> getRank(){
-//        List<RankResponseDto> list = rankingService.getRank();
-//
-//        return ResponseEntity.ok().body(list);
-//    }
 }
