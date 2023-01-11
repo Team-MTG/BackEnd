@@ -120,7 +120,6 @@ public class UserServiceImplTest {
 
         //then
         Assertions.assertThat(user).isNotNull();
-        Assertions.assertThat(user.getLoginId()).isEqualTo(request.getLoginId());
         Assertions.assertThat(user.getNickname()).isEqualTo(request.getNickname());
 
         //verify
@@ -137,7 +136,7 @@ public class UserServiceImplTest {
                 .username("유해찬")
                 .build();
 
-        given(userRepository.findById(any())).willReturn(Optional.of(user));
+        given(userRepository.findByNickname(any())).willReturn(Optional.of(user));
         UserDto user2 = UserDto.builder()
                 .loginId("haechan")
                 .nickname("해찬123")

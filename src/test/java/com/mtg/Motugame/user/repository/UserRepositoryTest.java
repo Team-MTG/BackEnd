@@ -86,4 +86,20 @@ class UserRepositoryTest {
         //then
         assertNotNull(savedUser.getCreatedAt());
     }
+
+    @Test
+    @DisplayName("name으로 값을 찾아오는게 제대로 동작하는지 확인")
+    void checkFindByName() {
+        //given
+        UserEntity user = user();
+        UserEntity savedUser = userRepository.save(user);
+
+        //when
+        Optional<UserEntity> findData = userRepository.findByNickname("해찬123");
+
+        //then
+        assertThat(findData.get().getLoginId()).isEqualTo(savedUser.getLoginId());
+        assertThat(findData.get().getNickname()).isEqualTo(savedUser.getNickname());
+        assertThat(findData.get().getUsername()).isEqualTo(savedUser.getUsername());
+    }
 }
