@@ -52,7 +52,7 @@ class StockServiceImplTest {
         //then
         Assertions.assertThat(size).isEqualTo(20);
     }
-
+    
     private List<StockInfoEntity> stockInfoList(){
         List<StockInfoEntity> stockInfoEntityList = new ArrayList<>();
         for (int i = 0; i < 20; i++) {

@@ -4,13 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
+
 @Getter
 @Builder
 @AllArgsConstructor
 public class RankResponseDto {
-    private long id;
-    private String name;
-    private int rank;
-    private float rate;
-    private int totalCash;
+    private Integer rank;
+
+    private String nickname;
+
+    private BigDecimal profit;
+
+    private BigDecimal yield;
+
 }

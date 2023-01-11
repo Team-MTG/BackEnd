@@ -20,7 +20,7 @@ public class StockController {
     public ResponseEntity<List<StockDataInfoDto>> findRandStockPriceInfo(@RequestParam("index") List<Integer> index) {
         List<StockDataInfoDto> stockDataInfos = stockRepository.getStocksPrices(index);
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Total-Count", Integer.toString(stockDataInfos.size()));
+        headers.set("X-Total-Count", Integer.toString(stockRepository.getStocksInfo()));
 
         return ResponseEntity.ok().headers(headers).body(stockDataInfos);
     }
@@ -28,10 +28,8 @@ public class StockController {
     //몇개의 주식 데이터가 존재하는지 헤더에만 담아서 반환하는 메서드
     @RequestMapping(value = "/stocks", method = RequestMethod.HEAD)
     public ResponseEntity<Void> findHeadRandStockPriceInfo() {
-        int stockDataInfoSize = stockRepository.getStocksInfo();
-
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Total-Count", Integer.toString(stockDataInfoSize));
+        headers.set("X-Total-Count", Integer.toString(stockRepository.getStocksInfo()));
 
         return ResponseEntity.ok().headers(headers).body(null);
     }

@@ -133,26 +133,6 @@ class StockControllerTest {
         verify(stockService).getStocksInfo();
     }
 
-    @Test
-    @DisplayName("헤더에 주식데이터 개수 담기 실패")
-    public void getHeadRandomStockFail() throws Exception{
-        //given
-        //요청 데이터 (주식코드,주식이름) + 주식가격리스트
-        List<StockInfoEntity> stockDataInfoList = stockInfoList();
-
-        given(stockService.getStocksInfo()).willReturn(stockDataInfoList.size());
-
-        //when
-        mockMvc.perform(head("/api/stocks")) //request의 헤더에 추가하는 것이다.
-                .andExpect(header().doesNotExist("X-Total-Count"))
-                .andExpect(status().isOk())
-                .andDo(print());
-
-        //then
-        verify(stockService).getStocksInfo();
-    }
-
-
     private List<StockInfoEntity> stockInfoList(){
         List<StockInfoEntity> stockInfoEntityList = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
