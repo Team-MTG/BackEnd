@@ -3,6 +3,7 @@ package com.mtg.Motugame.stock.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -10,5 +11,5 @@ import java.time.LocalDate;
 public class StockDatePriceDto {
     private LocalDate date;
 
-    private Integer price;
+    private BigDecimal price;
 }

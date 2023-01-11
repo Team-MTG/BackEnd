@@ -6,24 +6,31 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-import javax.persistence.Column;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "USER")
-public class UserEntity {
+@Table(name = "USER", uniqueConstraints = {@UniqueConstraint(name = "UNIQUE_NICKNAME_AND_LOGIN_ID",columnNames = {"nickname", "login_id"})})
+public class UserEntity extends CreatedTimeEntity {
 
-    @Id
-    private String id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String name;
+    @Column(length = 20, nullable = false)
+    private String nickname;
 
-    private String gameId;
+    @Column(length = 20)
+    private String username;
+
+    @Column(name = "login_id", length = 40)
+    private String loginId;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    List<TotalScoreEntity> totalScores = new ArrayList<>();
+
 }

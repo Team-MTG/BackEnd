@@ -32,10 +32,10 @@ class UserRepositoryTest {
         userRepository.save(user());
 
         //when
-        Optional<UserEntity> findUser = userRepository.findById("qwd5320");
+        Optional<UserEntity> findUser = userRepository.findByLoginId("haechan");
 
         //then
-        assertThat(findUser.get().getName()).isEqualTo(user().getName());
+        assertThat(findUser.get().getUsername()).isEqualTo(user().getUsername());
     }
 
     @DisplayName("유저 목록 조회")
@@ -61,12 +61,29 @@ class UserRepositoryTest {
         UserEntity savedUser = userRepository.save(user);
 
         // then
-        assertThat(savedUser.getId()).isEqualTo(user.getId());
-        assertThat(savedUser.getName()).isEqualTo(user.getName());
-        assertThat(savedUser.getGameId()).isEqualTo(user.getGameId());
+        assertThat(savedUser.getUsername()).isEqualTo(user.getUsername());
+        assertThat(savedUser.getNickname()).isEqualTo(user.getNickname());
+        assertThat(savedUser.getLoginId()).isEqualTo(user.getLoginId());
     }
 
     private UserEntity user() {
-        return new UserEntity("qwd5320", "jiwon", "jiione");
+        return UserEntity.builder()
+                .username("유해찬")
+                .nickname("해찬123")
+                .loginId("haechan")
+                .build();
+    }
+
+    @DisplayName("createDate가 제대로 저장이되는지")
+    @Test
+    void checkCreateDate() {
+        //given
+        UserEntity user = user();
+
+        //when
+        UserEntity savedUser = userRepository.save(user);
+
+        //then
+        assertNotNull(savedUser.getCreatedAt());
     }
 }

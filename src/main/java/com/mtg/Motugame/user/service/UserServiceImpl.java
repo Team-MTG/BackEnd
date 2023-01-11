@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
     public UserEntity findUser(String id){
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
+        UserEntity user = userRepository.findByLoginId(id).orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
         return user;
     }
 
@@ -35,14 +35,14 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     public UserEntity insertUser(UserDto userDto){
-        if(userRepository.findById(userDto.getId()).isPresent()) {
+        if(userRepository.findById(userDto.getLoginId()).isPresent()) {
             throw new IllegalArgumentException(ExceptionMessage.USER_ALREADY_EXISTS);
         }
 
         UserEntity user = UserEntity.builder()
-                .id(userDto.getId())
-                .gameId(userDto.getGameId())
-                .name(userDto.getName())
+                .username(userDto.getUsername())
+                .nickname(userDto.getNickname())
+                .loginId(userDto.getLoginId())
                 .build();
         userRepository.save(user);
 

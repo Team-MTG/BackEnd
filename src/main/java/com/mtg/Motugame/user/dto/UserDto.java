@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Builder
 public class UserDto {
-    private String id;
-    private String name;
-    private String gameId;
+    private String nickname;
+    private String username;
+    private String loginId;
 }

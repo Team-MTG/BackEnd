@@ -6,8 +6,7 @@ import com.mtg.Motugame.user.dto.UserDto;
 import java.util.List;
 
 public interface UserService {
-    public UserEntity findUser(String id);
-
-    public List<UserEntity> findAllUser();
-    public UserEntity insertUser(UserDto userDto);
+    UserEntity findUser(String id);
+    List<UserEntity> findAllUser();
+    UserEntity insertUser(UserDto userDto);
 }

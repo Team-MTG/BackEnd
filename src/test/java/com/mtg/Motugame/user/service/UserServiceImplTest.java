@@ -37,17 +37,21 @@ public class UserServiceImplTest {
     @DisplayName("id로 유저 찾기 성공 테스트")
     void findUserById(){
         //given
-        UserEntity user = new UserEntity("qwd5320", "jiwon","jiione");
-        given(userRepository.findById(any())).willReturn(Optional.of(user));
+        UserEntity user = UserEntity.builder()
+                .loginId("haechan")
+                .nickname("해찬123")
+                .username("유해찬")
+                .build();
+        given(userRepository.findByLoginId(any())).willReturn(Optional.of(user));
 
         //when
-        UserEntity user2 = userService.findUser("");
+        UserEntity user2 = userService.findUser("haechan");
 
         //then
         Assertions.assertThat(user2).isNotNull();
-        Assertions.assertThat(user2.getId()).isEqualTo("qwd5320");
-        Assertions.assertThat(user2.getName()).isEqualTo("jiwon");
-        Assertions.assertThat(user2.getGameId()).isEqualTo("jiione");
+        Assertions.assertThat(user2.getLoginId()).isEqualTo("haechan");
+        Assertions.assertThat(user2.getNickname()).isEqualTo("해찬123");
+        Assertions.assertThat(user2.getUsername()).isEqualTo("유해찬");
     }
 
     @Test
@@ -62,8 +66,16 @@ public class UserServiceImplTest {
     @DisplayName("유저 목록 찾기 성공 테스트")
     void findAllUser(){
         //given
-        UserEntity user1 = new UserEntity("qwd5320", "jiwon","jiione");
-        UserEntity user2 = new UserEntity("kor1234", "minsun", "sun");
+        UserEntity user1 = UserEntity.builder()
+                .loginId("haechan")
+                .nickname("해찬123")
+                .username("유해찬")
+                .build();
+        UserEntity user2 = UserEntity.builder()
+                .loginId("jiwon")
+                .nickname("지원123")
+                .username("박지원")
+                .build();
         List<UserEntity> list = new ArrayList<>(Arrays.asList(user1,user2));
         given(userRepository.findAll()).willReturn(list);
 
@@ -73,8 +85,8 @@ public class UserServiceImplTest {
         //then
         Assertions.assertThat(list2).isNotEmpty();
         Assertions.assertThat(list2.size()).isEqualTo(2);
-        Assertions.assertThat(list2.get(0).getId()).isEqualTo("qwd5320");
-        Assertions.assertThat(list2.get(1).getId()).isEqualTo("kor1234");
+        Assertions.assertThat(list2.get(0).getLoginId()).isEqualTo("haechan");
+        Assertions.assertThat(list2.get(1).getLoginId()).isEqualTo("jiwon");
     }
 
     @Test
@@ -90,12 +102,16 @@ public class UserServiceImplTest {
     void insertUser(){
         //given
         UserDto request = UserDto.builder()
-                .id("qwd5320")
-                .name("jiwon")
-                .gameId("jiione")
+                .loginId("haechan")
+                .nickname("해찬123")
+                .username("유해찬")
                 .build();
 
-        doReturn(new UserEntity(request.getId(),request.getName(),request.getGameId()))
+        doReturn(UserEntity.builder()
+                .loginId("haechan")
+                .nickname("해찬123")
+                .username("유해찬")
+                .build())
                 .when(userRepository)
                 .save(any(UserEntity.class));
 
@@ -104,8 +120,8 @@ public class UserServiceImplTest {
 
         //then
         Assertions.assertThat(user).isNotNull();
-        Assertions.assertThat(user.getId()).isEqualTo(request.getId());
-        Assertions.assertThat(user.getName()).isEqualTo(request.getName());
+        Assertions.assertThat(user.getLoginId()).isEqualTo(request.getLoginId());
+        Assertions.assertThat(user.getNickname()).isEqualTo(request.getNickname());
 
         //verify
         verify(userRepository,times(1)).save(any(UserEntity.class));
@@ -115,12 +131,17 @@ public class UserServiceImplTest {
     @DisplayName("유저 등록 실패 케이스")
     void insertUserFail(){
         //given
-        UserEntity user = new UserEntity("qwd5320", "jiwon","jiione");
+        UserEntity user = UserEntity.builder()
+                .loginId("haechan")
+                .nickname("해찬123")
+                .username("유해찬")
+                .build();
+
         given(userRepository.findById(any())).willReturn(Optional.of(user));
         UserDto user2 = UserDto.builder()
-                .id("qwd5320")
-                .name("minsun")
-                .gameId("sun")
+                .loginId("haechan")
+                .nickname("해찬123")
+                .username("유해찬")
                 .build();
 
         assertThatThrownBy(() -> userService.insertUser(user2))
