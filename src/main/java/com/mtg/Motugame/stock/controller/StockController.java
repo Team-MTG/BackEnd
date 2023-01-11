@@ -21,8 +21,8 @@ public class StockController {
     //Request로 받은 random값을 기준으로 주식을 골라 해당 주식의 한 달 종가를 반환
     @GetMapping("/stocks")
     public ResponseEntity<StockDataInfoDto> findRandStockPriceInfo(@RequestParam("seed") List<String> seeds) {
-        List<StockPriceDto> stockDataInfos = stockRepository.getStocksPrices(seeds);
-        return ResponseEntity.ok().body(null);
+        StockDataInfoDto stockDataInfoDto = stockRepository.getStockDataInfoDto(seeds);
+        return ResponseEntity.ok().body(stockDataInfoDto);
 
     }
 }
