@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class RankingController {
     private final RankingServiceImpl rankingService;
 
     @PostMapping("/rankings")
-    public ResponseEntity<RankResponseDto> gameResult(@RequestBody RankRequestDto rankRequestDto){
+    public ResponseEntity<RankResponseDto> gameResult(@Valid @RequestBody RankRequestDto rankRequestDto){
         rankingService.saveScore(rankRequestDto);
         return ResponseEntity.ok().body(rankingService.getRank(rankRequestDto));
     }

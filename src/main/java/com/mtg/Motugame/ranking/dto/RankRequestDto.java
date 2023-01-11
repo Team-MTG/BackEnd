@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -13,8 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RankRequestDto {
+
+    @NotBlank(message = "nickname은 보내야하는 값 입니다.")
     private String nickname;
 
+    @NotNull(message = "totalProfit 값은 항상 있어야합니다. ")
     private BigDecimal totalProfit;
 
     private BigDecimal totalYield;

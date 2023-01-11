@@ -76,4 +76,50 @@ class RankingControllerTest {
                 .andExpect(content().string(objectMapper.writeValueAsString(response)))
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("내 랭킹을 알려주는 api 호출시 nickname이 빈 값일때")
+    void getRankingEmptyNickname() throws Exception {
+        //given
+        RankRequestDto request = RankRequestDto.builder()
+                .totalProfit(new BigDecimal("54.2"))
+                .totalYield(new BigDecimal(15315147))
+                .scoreInfoList(List.of(
+                        ScoreInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
+                        ScoreInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
+
+                )).build();
+
+        //when
+        mockMvc.perform(
+                        post("/api/rankings")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request))
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("내 랭킹을 알려주는 api 호출시 totalProfit이 빈 값일때")
+    void getRankingEmptyTotalProfit() throws Exception {
+        //given
+        RankRequestDto request = RankRequestDto.builder()
+                .nickname("jiwon")
+                .totalYield(new BigDecimal(15315147))
+                .scoreInfoList(List.of(
+                        ScoreInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
+                        ScoreInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
+
+                )).build();
+
+        //when
+        mockMvc.perform(
+                        post("/api/rankings")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request))
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
 }
