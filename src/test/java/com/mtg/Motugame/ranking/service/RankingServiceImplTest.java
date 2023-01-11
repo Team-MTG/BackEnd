@@ -180,57 +180,35 @@ class RankingServiceImplTest {
         Assertions.assertThat(ranking).isEqualTo(1L);
     }
 
-//    @Test
-//    @DisplayName("랭킹 목록 가져오기")
-//    void getRank(){
-//        //given
-//        RankingEntity ranking1 = new RankingEntity((long)1,"jiwon",(float)40.3,6000000);
-//        RankingEntity ranking2 = new RankingEntity((long)2,"minsun",(float)30,5000000);
-//        List<RankingEntity> list= new ArrayList<>(Arrays.asList(ranking1,ranking2));
-//        given(rankingRepository.findAll(Sort.by(Sort.Direction.DESC, "totalCash"))).willReturn(list);
-//
-//        //when
-//        List<RankResponseDto> list2 = rankingService.getRank();
-//
-//        //then
-//        Assertions.assertThat(list2).isNotEmpty();
-//        Assertions.assertThat(list2.size()).isEqualTo(2);
-//        Assertions.assertThat(list2.get(0).getName()).isEqualTo("jiwon");
-//        Assertions.assertThat(list2.get(0).getRank()).isEqualTo(1);
-//        Assertions.assertThat(list2.get(1).getName()).isEqualTo("minsun");
-//        Assertions.assertThat(list2.get(1).getRank()).isEqualTo(2);
-//    }
-//
-//    @Test
-//    @DisplayName("랭킹 등록")
-//    void insertRank(){
-//        //given
-//        RankingEntity ranking1 = new RankingEntity((long)1,"jiwon",(float)30,6000000);
-//        RankingEntity ranking2 = new RankingEntity((long)2,"minsun",(float)30,5000000);
-//        List<RankingEntity> list= new ArrayList<>(Arrays.asList(ranking1,ranking2));
-//        given(rankingRepository).willReturn(list);
-//        RankRequestDto request = RankRequestDto.builder()
-//                .name("jiwon")
-//                .rate(30)
-//                .totalCash(6000000)
-//                .build();
-//
-//        doReturn(new RankingEntity((long)1,request.getName(),request.getRate(),request.getTotalCash()))
-//                .when(rankingRepository)
-//                .save(any(RankingEntity.class));
-//
-//        //when
-//        RankResponseDto rank = rankingService.insertRank(request);
-//
-//        //then
-//        Assertions.assertThat(rank).isNotNull();
-//        Assertions.assertThat(rank.getName()).isEqualTo("jiwon");
-//
-//        //verify
-//        verify(rankingRepository,times(1)).save(any(RankingEntity.class));
-//
-//
-//    }
+    @Test
+    @DisplayName("랭킹에 값을 제대로 찾는지 확인")
+    void getRankingSuccessfullyInDuplicated() {
+        //given
+        given(totalScoreRepository.findAllByOrderByProfitDesc())
+                .willReturn(
+                        List.of(
+                                TotalScoreEntity.builder()
+                                        .profit(new BigDecimal(74.2))
+                                        .totalYield(new BigDecimal(742000))
+                                        .user(UserEntity.builder()
+                                                .id(1L)
+                                                .nickname("박지원").build()).build(),
+                                TotalScoreEntity.builder()
+                                        .profit(new BigDecimal(54.2))
+                                        .totalYield(new BigDecimal(542000))
+                                        .user(UserEntity.builder()
+                                                .id(2L)
+                                                .nickname("박지원").build()).build()
+                        )
+                );
+
+        //when
+        Long ranking = rankingService.getRank("박지원", new BigDecimal(54.2));
+
+        //then
+        Assertions.assertThat(ranking).isEqualTo(2L);
+    }
+
     private RankRequestDto getRecordScoreRequest() {
         List<ScoreInfo> scoreInfoList = new ArrayList<>();
         scoreInfoList.add(ScoreInfo.builder()
