@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class StockDataInfoDto {
+public class StockPriceDto {
     private String stockCode;
 
     private String stockName;
