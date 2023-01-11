@@ -23,25 +23,21 @@ public class RankingServiceImpl implements RankingService {
 
     private final TotalScoreRepository totalScoreRepository;
     private final UserRepository userRepository;
-
-    //무한스크롤에서 순서대로 30개의 랭킹을 출력하는 메서드
+    
     public List<RankResponseDto> getSortedRank(int cnt) {
-        List<RankResponseWrapper> users = totalScoreRepository.findRank(cnt); //쿼리문에서 결과 담는 리스트
-        List<RankResponseDto> list = new ArrayList<>(); //반환할 리스트
+        List<RankResponseWrapper> users = totalScoreRepository.findRank(cnt);
+        List<RankResponseDto> list = new ArrayList<>();
 
-        //결과가 없을 경우 에러
+
         if (users.isEmpty()) {
             throw new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR);
         }
 
-        //리스트 요소 끝까지 반복
         for (RankResponseWrapper element : users) {
-            //users 테이블의 id를 통해 엔티티를 찾는다.
             Optional<UserEntity> userEntity = userRepository.findById(element.getUserId());
-            //null 예외처리
             userEntity.orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
 
-            //반활할 dto 가공
+
             RankResponseDto rankResponseDto = RankResponseDto.builder()
                     .rank(element.getNum())
                     .nickname(userEntity.get().getNickname())
