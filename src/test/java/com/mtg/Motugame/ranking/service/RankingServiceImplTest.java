@@ -151,6 +151,35 @@ class RankingServiceImplTest {
                 .hasMessageContaining(ExceptionMessage.NO_DATA_ERROR);
     }
 
+    @Test
+    @DisplayName("랭킹에 값을 제대로 찾는지 확인")
+    void getRankingSuccessfully() {
+        //given
+        given(totalScoreRepository.findAllByOrderByProfitDesc())
+                .willReturn(
+                        List.of(
+                                TotalScoreEntity.builder()
+                                        .profit(new BigDecimal(74.2))
+                                        .totalYield(new BigDecimal(742000))
+                                        .user(UserEntity.builder()
+                                                .id(1L)
+                                                .nickname("박지원").build()).build(),
+                                TotalScoreEntity.builder()
+                                        .profit(new BigDecimal(54.2))
+                                        .totalYield(new BigDecimal(542000))
+                                        .user(UserEntity.builder()
+                                                .id(2L)
+                                                .nickname("유해찬").build()).build()
+                        )
+                );
+
+        //when
+        Long ranking = rankingService.getRank("박지원", new BigDecimal(74.2));
+
+        //then
+        Assertions.assertThat(ranking).isEqualTo(1L);
+    }
+
 //    @Test
 //    @DisplayName("랭킹 목록 가져오기")
 //    void getRank(){
