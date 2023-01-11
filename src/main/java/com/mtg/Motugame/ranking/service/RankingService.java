@@ -6,6 +6,6 @@ import com.mtg.Motugame.ranking.dto.RankResponseDto;
 import java.util.List;
 
 public interface RankingService {
-    public List<RankResponseDto> getRank();
+    public List<RankResponseDto> getSortedRank(int cnt);
     public RankResponseDto insertRank(RankRequestDto rankRequestDto);
 }

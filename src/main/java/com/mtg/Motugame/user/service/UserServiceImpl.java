@@ -35,17 +35,17 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     public UserEntity insertUser(UserDto userDto){
-        if(userRepository.findById(userDto.getLoginId()).isPresent()) {
-            throw new IllegalArgumentException(ExceptionMessage.USER_ALREADY_EXISTS);
-        }
+//        if(userRepository.findById(userDto.getLoginId()).isPresent()) {
+//            throw new IllegalArgumentException(ExceptionMessage.USER_ALREADY_EXISTS);
+//        }
+//
+//        UserEntity user = UserEntity.builder()
+//                .username(userDto.getUsername())
+//                .nickname(userDto.getNickname())
+//                .loginId(userDto.getLoginId())
+//                .build();
+//        userRepository.save(user);
 
-        UserEntity user = UserEntity.builder()
-                .username(userDto.getUsername())
-                .nickname(userDto.getNickname())
-                .loginId(userDto.getLoginId())
-                .build();
-        userRepository.save(user);
-
-        return user;
+        return null;
     }
 }
