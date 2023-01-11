@@ -23,7 +23,7 @@ public class RankingServiceImpl implements RankingService {
 
     private final TotalScoreRepository totalScoreRepository;
     private final UserRepository userRepository;
-    
+
     public List<RankResponseDto> getSortedRank(int cnt) {
         List<RankResponseWrapper> users = totalScoreRepository.findRank(cnt);
         List<RankResponseDto> list = new ArrayList<>();
@@ -53,33 +53,4 @@ public class RankingServiceImpl implements RankingService {
         return totalScoreRepository.findAll().size();
     }
 
-    public RankResponseDto insertRank(RankRequestDto rankRequestDto) {
-
-//        RankingEntity ranking = RankingEntity.builder()
-//                .name(rankRequestDto.getName())
-//                .rate(rankRequestDto.getRate())
-//                .totalCash(rankRequestDto.getTotalCash())
-//                .build();
-//
-//        RankingEntity newRank = rankingRepository.save(ranking);
-//
-//        List<RankingEntity> users = rankingRepository.findAll(Sort.by(Sort.Direction.DESC, "totalCash"));
-//
-//        int i=1;
-//        for(RankingEntity ranked : users){
-//            if(ranked.getId() == newRank.getId()){
-//                RankResponseDto rankResponseDto = RankResponseDto.builder()
-//                        .id(newRank.getId())
-//                        .name(newRank.getName())
-//                        .rank(i)
-//                        .totalCash(newRank.getTotalCash())
-//                        .rate(newRank.getRate())
-//                        .build();
-//                return rankResponseDto;
-//            }
-//            i++;
-//        }
-
-        return null;
-    }
 }
