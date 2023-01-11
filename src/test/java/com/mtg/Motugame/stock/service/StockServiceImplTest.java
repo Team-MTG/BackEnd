@@ -53,19 +53,6 @@ class StockServiceImplTest {
         Assertions.assertThat(size).isEqualTo(20);
     }
 
-    @DisplayName("주식개수 가져오기 실패")
-    @Test
-    void getStocksInfoFail() {
-        //given
-        given(stockInfoRepository.findAll()).willReturn(stockInfoList());
-
-        //when
-        int size = stockService.getStocksInfo();
-
-        //then
-        Assertions.assertThat(size).isEqualTo(19);
-    }
-
     private List<StockInfoEntity> stockInfoList(){
         List<StockInfoEntity> stockInfoEntityList = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
