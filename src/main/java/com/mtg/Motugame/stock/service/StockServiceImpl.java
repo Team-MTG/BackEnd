@@ -31,7 +31,6 @@ public class StockServiceImpl implements StockService {
         List<StockPriceDto> stockPriceDtoList = new ArrayList<>();
 
         for (var seed : seeds) {
-
             //랜덤한 주식을 고름
             StockInfoEntity stockInfoEntity = getRandomStockInfoEntity(seed);
             //선택한 주식의 가격스리보 정보를 가져옴
@@ -116,24 +115,6 @@ public class StockServiceImpl implements StockService {
         return result;
     }
 
-//    private List<StockInfoEntity> getStockInfoEntitiesUsingIndex(List<String> indices) {
-//        List<StockInfoEntity> result = new ArrayList<>();
-//
-//        List<StockInfoEntity> allStocks = stockInfoRepository.findAllByOrderByStockCode();
-//        for (String index : indices) {
-//            result.add(allStocks.get(index));
-//        }
-//
-//        return result;
-//    }
-
-//    private double calculateAverage(StockInfoEntity stockInfo) {
-//        double data = 0;
-//        for (int i = 0 ; i < stockInf) {
-//
-//        }
-//    }
-
     private List<StockDatePriceDto> getStockDatePriceDtoList(StockInfoEntity stockInfoEntity) {
             List<StockDatePriceDto> stockDatePriceDtos = new ArrayList<>();
 
@@ -148,5 +129,9 @@ public class StockServiceImpl implements StockService {
             }
 
             return stockDatePriceDtos;
+    }
+    
+    public Integer getStocksInfo() {
+        return stockInfoRepository.findAll().size();
     }
 }
