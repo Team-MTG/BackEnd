@@ -64,6 +64,7 @@ class RankingControllerTest {
 //                .andExpect(jsonPath("$.[0].rank").exists())
 //                .andExpect(jsonPath("$.[0].totalCash").exists())
 //                .andDo(print());
+
     }
 
     @Test

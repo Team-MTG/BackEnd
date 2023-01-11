@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
@@ -28,6 +29,7 @@ import java.util.List;
 
 @WebMvcTest(StockController.class)
 @AutoConfigureMockMvc
+@MockBean(JpaMetamodelMappingContext.class)
 class StockControllerTest {
 
     @MockBean
