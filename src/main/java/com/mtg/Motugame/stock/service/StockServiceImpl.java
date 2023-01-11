@@ -1,14 +1,16 @@
 package com.mtg.Motugame.stock.service;
 
-import com.mtg.Motugame.entity.ScoreRecordEntity;
 import com.mtg.Motugame.entity.StockInfoEntity;
 import com.mtg.Motugame.entity.StockPriceEntity;
 import com.mtg.Motugame.stock.dto.StockAverageDto;
+import com.mtg.Motugame.stock.dto.StockDataInfoDto;
 import com.mtg.Motugame.stock.dto.StockPriceDto;
 import com.mtg.Motugame.stock.dto.StockDatePriceDto;
 import com.mtg.Motugame.stock.repository.StockInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockServiceImpl implements StockService {
     private final StockInfoRepository stockInfoRepository;
+
+    public StockDataInfoDto getStockDataInfoDto(List<String> seeds) {
+        return StockDataInfoDto.builder()
+                .stockPrices(getStocksPrices(seeds))
+                .stockAverages(getAveragePrices(seeds))
+                .build();
+    }
 
     //주식가격정보를 가져옴
     public List<StockPriceDto> getStocksPrices(List<String> seeds) {
@@ -69,12 +78,33 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<StockAverageDto> getAveragePrices(List<String> seeds) {
-//        List<StockInfoEntity> stocks = getStockInfoEntitiesUsingIndex(convertSeedsToIndex(seeds));
-//
-//        for (StockInfoEntity stock : stocks) {
-//
-//        }
-        return null;
+        List<StockAverageDto> stockAverageDtoList = new ArrayList<>();
+
+        List<StockPriceDto> stockPriceDtoList = getStocksPrices(seeds);
+
+        for (var stockPriceDto : stockPriceDtoList) {
+            stockAverageDtoList.add(StockAverageDto.builder()
+                    .stockName(stockPriceDto.getStockName())
+                    .userAverageProfit(getUserAverageProfit(stockPriceDto.getStockCode()))
+                    .build()
+            );
+
+        }
+        return stockAverageDtoList;
+    }
+
+    //사용자들의 해당 주식 평균 수익률을 구함
+    private Double getUserAverageProfit(String stockCode) {
+        StockInfoEntity stockInfoEntity = stockInfoRepository.findByStockCode(stockCode);
+
+        BigDecimal totalProfit = new BigDecimal("0.0");//총 수익
+        for (var scoreRecordEntity : stockInfoEntity.getScoreRecords()) {
+            totalProfit = totalProfit.add(scoreRecordEntity.getProfit());
+        }
+        BigDecimal size = new BigDecimal(String.valueOf(stockInfoEntity.getScoreRecords().size()));
+        BigDecimal result = totalProfit.divide(size);
+
+        return result.doubleValue();
     }
 
     private List<String> convertSeedsToIndex(List<String> seeds) {
