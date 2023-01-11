@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface StockInfoRepository extends JpaRepository<StockInfoEntity, String> {
     public List<StockInfoEntity> findAllByOrderByStockCode();
+
+    public StockInfoEntity findByStockCode(String code);
 }
