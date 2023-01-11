@@ -8,9 +8,6 @@ import java.util.List;
 @Getter
 @Builder
 public class StockDataInfoDto {
-    private String stockCode;
-
-    private String stockName;
-
-    private List<StockDatePriceDto> datas;
+    private List<StockAverageDto> stockAverages;
+    private List<StockPriceDto> stockPrices;
 }
