@@ -33,7 +33,7 @@ public class RankingServiceImpl implements RankingService {
     private final StockInfoRepository stockInfoRepository;
 
 
-    public TotalInfoDto recordScore(RankRequestDto rankRequestDto) {
+    public void recordScore(RankRequestDto rankRequestDto) {
 
         List<ScoreInfo> scoreInfoList = rankRequestDto.getScoreInfoList();
 
@@ -65,21 +65,22 @@ public class RankingServiceImpl implements RankingService {
                     .build());
         }
 
+        return;
+    }
+
+    public Long getRank(String nickname, BigDecimal profit){
         List<TotalScoreEntity> rankList = totalScoreRepository.findAll(Sort.by(Sort.Direction.DESC, "profit"));
         Long rank = 1L;
 
         for (TotalScoreEntity totalScoreEntity : rankList) {
-            if(totalScoreEntity.getUser().getNickname().equals(rankRequestDto.getNickname())
-                    && rankRequestDto.getTotalProfit().equals(totalScoreEntity.getProfit()))
+            if(nickname.equals(totalScoreEntity.getUser().getNickname())
+                    && profit.equals(totalScoreEntity.getProfit()))
                 break;
 
             rank++;
         }
 
-        return TotalInfoDto.builder()
-                .profit(rankRequestDto.getTotalProfit())
-                .yield(rankRequestDto.getTotalYield())
-                .rank(rank).nickname(rankRequestDto.getNickname()).build();
+        return rank;
     }
 
 }

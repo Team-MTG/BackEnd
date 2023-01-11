@@ -19,9 +19,17 @@ public class RankingController {
     private final RankingServiceImpl rankingService;
 
     @PostMapping("/rankings")
-    public ResponseEntity<TotalInfoDto> gameResult(@RequestBody RankRequestDto rankRequestDto){
-        TotalInfoDto totalInfoDto = rankingService.recordScore(rankRequestDto);
-        return ResponseEntity.ok().body(totalInfoDto);
+    public ResponseEntity<RankResponseDto> gameResult(@RequestBody RankRequestDto rankRequestDto){
+        rankingService.recordScore(rankRequestDto);
+
+        RankResponseDto rankResponseDto = RankResponseDto.builder()
+                .nickname(rankRequestDto.getNickname())
+                .profit(rankRequestDto.getTotalProfit())
+                .yield(rankRequestDto.getTotalYield())
+                .rank(rankingService.getRank(rankRequestDto.getNickname(),rankRequestDto.getTotalProfit()))
+                .build();
+
+        return ResponseEntity.ok().body(rankResponseDto);
     }
 
 //    @GetMapping("/rankings")

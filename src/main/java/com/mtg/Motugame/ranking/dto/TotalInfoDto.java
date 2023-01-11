@@ -12,7 +12,5 @@ public class TotalInfoDto {
 
     private BigDecimal yield;
 
-    private Long rank;
-
     private String nickname;
 }

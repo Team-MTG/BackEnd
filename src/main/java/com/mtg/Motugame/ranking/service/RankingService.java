@@ -7,5 +7,5 @@ import com.mtg.Motugame.ranking.dto.TotalInfoDto;
 import java.util.List;
 
 public interface RankingService {
-    public TotalInfoDto recordScore(RankRequestDto rankRequestDto);
+    public void recordScore(RankRequestDto rankRequestDto);
 }
