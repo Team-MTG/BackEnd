@@ -7,20 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-
-
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class RankResponseDto {
-
-    private Integer rank;
-
-    private String nickname;
+@AllArgsConstructor
+public class ScoreInfo {
+    private String stockCode;
 
     private BigDecimal profit;
 
     private BigDecimal yield;
-
 }

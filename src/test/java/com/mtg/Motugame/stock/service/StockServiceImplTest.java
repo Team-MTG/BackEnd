@@ -3,6 +3,7 @@ package com.mtg.Motugame.stock.service;
 import com.mtg.Motugame.entity.StockInfoEntity;
 import com.mtg.Motugame.entity.StockPriceEntity;
 import com.mtg.Motugame.stock.dto.StockDataInfoDto;
+import com.mtg.Motugame.stock.dto.StockPriceDto;
 import com.mtg.Motugame.stock.repository.StockInfoRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -25,20 +26,6 @@ class StockServiceImplTest {
 
     @Mock
     private StockInfoRepository stockInfoRepository;
-
-    @DisplayName("주식가격 가져오기")
-    @Test
-    void getStocksPrices() {
-        //given
-        List<Integer> randNum = List.of(1, 20);
-        given(stockInfoRepository.findAll()).willReturn(stockInfoEntityList());
-
-        //when
-        List<StockDataInfoDto> stocksPrices = stockService.getStocksPrices(randNum);
-
-        //then
-        Assertions.assertThat(stocksPrices.size()).isEqualTo(2);
-    }
 
     @DisplayName("주식개수 가져오기 성공")
     @Test

@@ -13,24 +13,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class StockController {
-    private final StockServiceImpl stockRepository;
+    private final StockServiceImpl stockService;
 
     //Request로 받은 random값을 기준으로 주식을 골라 해당 주식의 한 달 종가를 반환
     @GetMapping("/stocks")
-    public ResponseEntity<List<StockDataInfoDto>> findRandStockPriceInfo(@RequestParam("index") List<Integer> index) {
-        List<StockDataInfoDto> stockDataInfos = stockRepository.getStocksPrices(index);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Total-Count", Integer.toString(stockRepository.getStocksInfo()));
-
-        return ResponseEntity.ok().headers(headers).body(stockDataInfos);
+    public ResponseEntity<StockDataInfoDto> findRandStockPriceInfo(@RequestParam("seed") List<String> seeds) {
+        StockDataInfoDto stockDataInfoDto = stockService.getStockDataInfoDto(seeds);
+        return ResponseEntity.ok().body(stockDataInfoDto);
     }
 
     //몇개의 주식 데이터가 존재하는지 헤더에만 담아서 반환하는 메서드
     @RequestMapping(value = "/stocks", method = RequestMethod.HEAD)
     public ResponseEntity<Void> findHeadRandStockPriceInfo() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Total-Count", Integer.toString(stockRepository.getStocksInfo()));
-
+        headers.set("X-Total-Count", Integer.toString(stockService.getStocksInfo()));
         return ResponseEntity.ok().headers(headers).body(null);
     }
 }

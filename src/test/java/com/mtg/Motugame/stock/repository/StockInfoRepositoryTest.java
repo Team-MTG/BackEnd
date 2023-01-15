@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -33,6 +34,28 @@ class StockInfoRepositoryTest {
 
         //then
         Assertions.assertThat(stockList.size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("주식에 대해서 주식코드로 정렬해서 가져오는 로직이 제대로 작동하는지")
+    public void findSortAllData() {
+        //given
+        StockInfoEntity stockInfo1 = StockInfoEntity.builder()
+                .stockCode("2")
+                .stockName("삼성전자")
+                .build();
+        StockInfoEntity stockInfo2 = StockInfoEntity.builder()
+                .stockCode("1")
+                .stockName("SK하이닉스")
+                .build();
+        stockInfoRepository.save(stockInfo1);
+        stockInfoRepository.save(stockInfo2);
+
+        //when
+        List<StockInfoEntity> findStocks = stockInfoRepository.findAllByOrderByStockCode();
+
+        //then
+        Assertions.assertThat(findStocks.get(0).getStockName()).isEqualTo("SK하이닉스");
     }
 
 }
