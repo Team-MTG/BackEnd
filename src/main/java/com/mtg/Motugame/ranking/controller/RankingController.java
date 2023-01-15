@@ -20,12 +20,12 @@ public class RankingController {
 
     private final RankingServiceImpl rankingService;
 
-    @PostMapping("/rankings")
-    public ResponseEntity<RankResponseDto> insertRank(@RequestBody RankRequestDto rankRequestDto) {
-        RankResponseDto rankResponseDto = rankingService.insertRank(rankRequestDto);
-
-        return ResponseEntity.ok().body(rankResponseDto);
-    }
+//    @PostMapping("/rankings")
+//    public ResponseEntity<RankResponseDto> insertRank(@RequestBody RankRequestDto rankRequestDto) {
+//        RankResponseDto rankResponseDto = rankingService.insertRank(rankRequestDto);
+//
+//        return ResponseEntity.ok().body(rankResponseDto);
+//    }
 
     @GetMapping("/rankings")
     public ResponseEntity<List<RankResponseDto>> getRank(@RequestParam("start") int cnt) {
@@ -41,7 +41,6 @@ public class RankingController {
     public ResponseEntity<Void> getHeadRank() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Total-Count", Integer.toString(rankingService.getHeadRank()));
-
         return ResponseEntity.ok().headers(headers).body(null);
     }
 }
