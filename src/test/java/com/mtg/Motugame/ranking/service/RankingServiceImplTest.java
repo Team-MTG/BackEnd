@@ -4,6 +4,7 @@ import com.mtg.Motugame.entity.*;
 import com.mtg.Motugame.exception.ExceptionMessage;
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
+import com.mtg.Motugame.ranking.dto.RankResponseWrapper;
 import com.mtg.Motugame.ranking.dto.ScoreInfo;
 import com.mtg.Motugame.ranking.repository.RankingRepository;
 import com.mtg.Motugame.ranking.repository.ScoreRecordRepository;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -248,5 +250,65 @@ class RankingServiceImplTest {
                 .build();
 
         return request;
+    }
+    @Test
+    @DisplayName("정렬된 랭킹값을 제대로 담는지 확인")
+    void getSortedRankingSuccessfully() {
+        //given
+        class Test implements RankResponseWrapper{
+
+            @Override
+            public Long getId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getUserId() {
+                return 2L;
+            }
+
+            @Override
+            public BigDecimal getProfit() {
+                return new BigDecimal(10);
+            }
+
+            @Override
+            public BigDecimal getTotalYield() {
+                return new BigDecimal(1557);
+            }
+
+            @Override
+            public Integer getNum() {
+                return 2;
+            }
+        };
+        Test test = new Test();
+        List<RankResponseWrapper> users = new ArrayList<>();
+        List<RankResponseDto> result = new ArrayList<>();
+        users.add(test);
+        given(totalScoreRepository.findRank(anyInt())).willReturn(users);
+        UserEntity userEntity = UserEntity.builder().nickname("KH").build();
+        Optional<UserEntity> userEntityOptional = Optional.ofNullable(userEntity);
+        given(userRepository.findById(anyLong())).willReturn(userEntityOptional);
+        //when
+        result = rankingService.getSortedRank(anyInt());
+        //then
+        Assertions.assertThat(result.get(0).getNickname()).isEqualTo("KH");
+        Assertions.assertThat(result.get(0).getRank()).isEqualTo(2);
+        Assertions.assertThat(result.get(0).getProfit()).isEqualTo(BigDecimal.valueOf(10));
+        Assertions.assertThat(result.get(0).getYield()).isEqualTo(BigDecimal.valueOf(1557));
+
+    }
+    @Test
+    @DisplayName("반환된 랭킹 비어있을 경우")
+    void emptyRank(){
+        //then
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> rankingService.getSortedRank(anyInt()));
+
+        String expectedMessage = "no such data";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 }
