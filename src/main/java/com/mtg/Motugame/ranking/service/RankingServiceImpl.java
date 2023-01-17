@@ -3,9 +3,7 @@ package com.mtg.Motugame.ranking.service;
 
 import com.mtg.Motugame.entity.*;
 import com.mtg.Motugame.exception.ExceptionMessage;
-import com.mtg.Motugame.ranking.dto.RankRequestDto;
-import com.mtg.Motugame.ranking.dto.RankResponseDto;
-import com.mtg.Motugame.ranking.dto.ScoreInfo;
+import com.mtg.Motugame.ranking.dto.*;
 import com.mtg.Motugame.ranking.repository.ScoreRecordRepository;
 import com.mtg.Motugame.ranking.repository.TotalScoreRepository;
 import com.mtg.Motugame.stock.repository.StockInfoRepository;
@@ -13,7 +11,6 @@ import com.mtg.Motugame.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import com.mtg.Motugame.entity.TotalScoreEntity;
 import com.mtg.Motugame.entity.UserEntity;
-import com.mtg.Motugame.ranking.dto.RankResponseWrapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -96,7 +93,8 @@ public class RankingServiceImpl implements RankingService {
 
     @Override
     public List<RankResponseDto> getSortedRank(int cnt) {
-        List<RankResponseWrapper> users = totalScoreRepository.findRank(cnt);
+        cnt = (cnt - 1) * 30;
+        List<RankSqlResultDto> users = totalScoreRepository.findRank(cnt);
         List<RankResponseDto> list = new ArrayList<>();
 
 
@@ -104,7 +102,7 @@ public class RankingServiceImpl implements RankingService {
             throw new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR);
         }
 
-        for (RankResponseWrapper element : users) {
+        for (RankSqlResultDto element : users) {
             Optional<UserEntity> userEntity = userRepository.findById(element.getUserId());
             userEntity.orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
 

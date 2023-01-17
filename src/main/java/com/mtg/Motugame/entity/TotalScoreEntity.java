@@ -1,5 +1,6 @@
 package com.mtg.Motugame.entity;
 
+import com.mtg.Motugame.ranking.dto.RankSqlResultDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NamedNativeQuery(
+        name = "findRank",
+        query =
+                "SELECT id, user_id as userId, profit, total_yield as totalYield, row_number() over(order by profit desc) as num\n" +
+                        "FROM total_score limit 30 offset :cnt",
+        resultSetMapping = "ResultMapper"
+)
+@SqlResultSetMapping(
+        name = "ResultMapper",
+        classes = {@ConstructorResult(
+                targetClass = RankSqlResultDto.class,
+                columns = {
+                        @ColumnResult(name = "id", type = Long.class),
+                        @ColumnResult(name = "userId", type = Long.class),
+                        @ColumnResult(name = "profit", type = BigDecimal.class),
+                        @ColumnResult(name = "totalYield", type = BigDecimal.class),
+                        @ColumnResult(name = "num", type = Integer.class)
+                }
+        )}
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -18,7 +39,8 @@ import java.util.List;
 @Table(name = "total_score")
 public class TotalScoreEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(precision = 15, scale = 2, nullable = false)
