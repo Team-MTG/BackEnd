@@ -2,7 +2,6 @@ package com.mtg.Motugame.ranking.controller;
 
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
-
 import com.mtg.Motugame.ranking.service.RankingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

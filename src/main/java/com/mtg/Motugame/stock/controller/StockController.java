@@ -1,7 +1,6 @@
 package com.mtg.Motugame.stock.controller;
 
 import com.mtg.Motugame.stock.dto.StockDataInfoDto;
-import com.mtg.Motugame.stock.dto.StockPriceDto;
 import com.mtg.Motugame.stock.service.StockServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +27,6 @@ public class StockController {
     public ResponseEntity<Void> findHeadRandStockPriceInfo() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Total-Count", Integer.toString(stockService.getStocksInfo()));
-
         return ResponseEntity.ok().headers(headers).body(null);
     }
 }

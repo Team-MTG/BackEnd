@@ -2,8 +2,6 @@ package com.mtg.Motugame.stock.service;
 
 import com.mtg.Motugame.entity.StockInfoEntity;
 import com.mtg.Motugame.entity.StockPriceEntity;
-import com.mtg.Motugame.stock.dto.StockDataInfoDto;
-import com.mtg.Motugame.stock.dto.StockPriceDto;
 import com.mtg.Motugame.stock.repository.StockInfoRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
