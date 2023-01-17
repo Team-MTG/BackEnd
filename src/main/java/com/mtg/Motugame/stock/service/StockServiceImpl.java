@@ -100,10 +100,12 @@ public class StockServiceImpl implements StockService {
         for (var scoreRecordEntity : stockInfoEntity.getScoreRecords()) {
             totalProfit = totalProfit.add(scoreRecordEntity.getProfit());
         }
-        BigDecimal size = new BigDecimal(String.valueOf(stockInfoEntity.getScoreRecords().size()));
-        BigDecimal result = totalProfit.divide(size);
 
-        return result.doubleValue();
+        if (stockInfoEntity.getScoreRecords().size() == 0) {
+            return 0.0;
+        }
+
+        return totalProfit.divide(new BigDecimal(String.valueOf(stockInfoEntity.getScoreRecords().size()))).doubleValue();
     }
 
     private List<String> convertSeedsToIndex(List<String> seeds) {
