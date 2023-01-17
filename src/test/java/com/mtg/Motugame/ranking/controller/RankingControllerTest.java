@@ -17,8 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.math.BigDecimal;
@@ -153,6 +152,20 @@ class RankingControllerTest {
         //when
         mockMvc.perform(get("/api/rankings"))
                 .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("헤더에 주식데이터 개수 담기 성공")
+    public void getHeadRandomStockSuccess() throws Exception{
+        //given
+
+        given(rankingService.getHeadRank()).willReturn(1);
+
+        //when
+        mockMvc.perform(head("/api/rankings")) //request의 헤더에 추가하는 것이다.
+                .andExpect(header().exists("X-Total-Count"))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 }
