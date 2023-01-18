@@ -54,7 +54,7 @@ public class StockServiceImpl implements StockService {
     //seed값을 기준으로 랜덤한 주식을 고르고 해당 주식의 랜덤시점으로부터의 300개의 데이터를 가져옴
     private StockInfoEntity getRandomStockInfoEntity(String seed) {
         //주식리스트에서 랜덤으로 접근할 시작 인덱스 번호로 주식코드 찾음
-        Integer randStockIndex = Integer.parseInt(seed.substring(0, 2));
+        Integer randStockIndex = Integer.parseInt(seed.substring(0, 3));
 
         //주식코드 번호로 정렬된 주식리스트를 가져옴
         List<StockInfoEntity> stockInfoEntityList = stockInfoRepository.findAllByOrderByStockCode();
