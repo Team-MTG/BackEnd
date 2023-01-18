@@ -3,7 +3,7 @@ package com.mtg.Motugame.ranking.service;
 import com.mtg.Motugame.entity.*;
 import com.mtg.Motugame.exception.ExceptionMessage;
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
-import com.mtg.Motugame.ranking.dto.ScoreInfo;
+import com.mtg.Motugame.ranking.dto.GameInfo;
 import com.mtg.Motugame.ranking.repository.ScoreRecordRepository;
 import com.mtg.Motugame.ranking.repository.TotalScoreRepository;
 import com.mtg.Motugame.stock.repository.StockInfoRepository;
@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -209,28 +208,28 @@ class RankingServiceImplTest {
     }
 
     private RankRequestDto getRecordScoreRequest() {
-        List<ScoreInfo> scoreInfoList = new ArrayList<>();
-        scoreInfoList.add(ScoreInfo.builder()
+        List<GameInfo> gameInfoList = new ArrayList<>();
+        gameInfoList.add(GameInfo.builder()
                 .stockCode("000001")
                 .profit(new BigDecimal("10.12"))
                 .yield(new BigDecimal("100000")).build());
 
-        scoreInfoList.add(ScoreInfo.builder()
+        gameInfoList.add(GameInfo.builder()
                 .stockCode("000002")
                 .profit(new BigDecimal("18.32"))
                 .yield(new BigDecimal("200000")).build());
 
-        scoreInfoList.add(ScoreInfo.builder()
+        gameInfoList.add(GameInfo.builder()
                 .stockCode("000003")
                 .profit(new BigDecimal("29.12"))
                 .yield(new BigDecimal("300000")).build());
 
-        scoreInfoList.add(ScoreInfo.builder()
+        gameInfoList.add(GameInfo.builder()
                 .stockCode("000004")
                 .profit(new BigDecimal("9.12"))
                 .yield(new BigDecimal("400000")).build());
 
-        scoreInfoList.add(ScoreInfo.builder()
+        gameInfoList.add(GameInfo.builder()
                 .stockCode("000005")
                 .profit(new BigDecimal("10.12"))
                 .yield(new BigDecimal("500000")).build());
@@ -239,7 +238,7 @@ class RankingServiceImplTest {
                 .totalYield(new BigDecimal("1500000"))
                 .totalProfit(new BigDecimal("23.12"))
                 .nickname("jiwon")
-                .scoreInfoList(scoreInfoList)
+                .scoreInfoList(gameInfoList)
                 .build();
 
         return request;

@@ -3,7 +3,7 @@ package com.mtg.Motugame.ranking.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
-import com.mtg.Motugame.ranking.dto.ScoreInfo;
+import com.mtg.Motugame.ranking.dto.GameInfo;
 import com.mtg.Motugame.ranking.service.RankingServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,8 +49,8 @@ class RankingControllerTest {
                 .totalProfit(new BigDecimal("54.2"))
                 .totalYield(new BigDecimal(15315147))
                 .scoreInfoList(List.of(
-                        ScoreInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
-                        ScoreInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
+                        GameInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
+                        GameInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
 
                 )).build();
 
@@ -82,8 +82,8 @@ class RankingControllerTest {
                 .totalProfit(new BigDecimal("54.2"))
                 .totalYield(new BigDecimal(15315147))
                 .scoreInfoList(List.of(
-                        ScoreInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
-                        ScoreInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
+                        GameInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
+                        GameInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
 
                 )).build();
 
@@ -105,8 +105,8 @@ class RankingControllerTest {
                 .nickname("jiwon")
                 .totalYield(new BigDecimal(15315147))
                 .scoreInfoList(List.of(
-                        ScoreInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
-                        ScoreInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
+                        GameInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
+                        GameInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
 
                 )).build();
 
