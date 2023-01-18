@@ -160,7 +160,7 @@ class RankingControllerTest {
     public void getHeadRandomStockSuccess() throws Exception{
         //given
 
-        given(rankingService.getHeadRank()).willReturn(1);
+        given(rankingService.getHeadRank()).willReturn(0);
 
         //when
         mockMvc.perform(head("/api/rankings")) //request의 헤더에 추가하는 것이다.

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -244,6 +244,7 @@ class RankingServiceImplTest {
 
         return request;
     }
+
 //    @Test
 //    @DisplayName("정렬된 랭킹값을 제대로 담는지 확인")
 //    void getSortedRankingSuccessfully() {

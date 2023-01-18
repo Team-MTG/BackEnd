@@ -19,7 +19,10 @@ public class StockController {
     @GetMapping("/stocks")
     public ResponseEntity<StockDataInfoDto> findRandStockPriceInfo(@RequestParam("seed") List<String> seeds) {
         StockDataInfoDto stockDataInfoDto = stockService.getStockDataInfoDto(seeds);
-        return ResponseEntity.ok().body(stockDataInfoDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Total-Count", Integer.toString(stockService.getStocksInfo()));
+        headers.set("Access-Control-Expose-Headers", "X-Total-Count");
+        return ResponseEntity.ok().headers(headers).body(stockDataInfoDto);
     }
 
     //몇개의 주식 데이터가 존재하는지 헤더에만 담아서 반환하는 메서드
@@ -27,6 +30,7 @@ public class StockController {
     public ResponseEntity<Void> findHeadRandStockPriceInfo() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Total-Count", Integer.toString(stockService.getStocksInfo()));
+        headers.set("Access-Control-Expose-Headers", "X-Total-Count");
         return ResponseEntity.ok().headers(headers).body(null);
     }
 }
