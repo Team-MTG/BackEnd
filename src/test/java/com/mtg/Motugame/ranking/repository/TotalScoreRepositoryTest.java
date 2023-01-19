@@ -32,9 +32,9 @@ class TotalScoreRepositoryTest {
         UserEntity entity1 = UserEntity.builder().nickname("haechan").build();
         UserEntity entity2 = UserEntity.builder().nickname("jiwon").build();
         List<TotalScoreEntity> totalScoreEntities = List.of(
-                TotalScoreEntity.builder().totalYield(new BigDecimal(1294292)).profit(new BigDecimal("54.2"))
+                TotalScoreEntity.builder().totalYield(BigDecimal.valueOf(1294292)).profit(BigDecimal.valueOf(54.2))
                         .user(entity1).build(),
-                TotalScoreEntity.builder().totalYield(new BigDecimal(21491242)).profit(new BigDecimal("74.2"))
+                TotalScoreEntity.builder().totalYield(BigDecimal.valueOf(21491242)).profit(BigDecimal.valueOf(74.2))
                         .user(entity2).build()
         );
         userRepository.save(entity1);
@@ -57,17 +57,17 @@ class TotalScoreRepositoryTest {
         //given
 
         List<TotalScoreEntity> totalScoreEntities = List.of(
-                TotalScoreEntity.builder().totalYield(new BigDecimal(12942920)).profit(new BigDecimal("54.2"))
+                TotalScoreEntity.builder().totalYield(BigDecimal.valueOf(12942920)).profit(BigDecimal.valueOf(54.2))
                         .id(1L).build(),
-                TotalScoreEntity.builder().totalYield(new BigDecimal(21491242)).profit(new BigDecimal("74.2"))
+                TotalScoreEntity.builder().totalYield(BigDecimal.valueOf(21491242)).profit(BigDecimal.valueOf(74.2))
                         .id(2L).build(),
-                TotalScoreEntity.builder().totalYield(new BigDecimal(13942920)).profit(new BigDecimal("55.2"))
+                TotalScoreEntity.builder().totalYield(BigDecimal.valueOf(13942920)).profit(BigDecimal.valueOf(55.2))
                         .id(3L).build(),
-                TotalScoreEntity.builder().totalYield(new BigDecimal(20491242)).profit(new BigDecimal("73.2"))
+                TotalScoreEntity.builder().totalYield(BigDecimal.valueOf(20491242)).profit(BigDecimal.valueOf(73.2))
                         .id(4L).build(),
-                TotalScoreEntity.builder().totalYield(new BigDecimal(20000000)).profit(new BigDecimal("70.2"))
+                TotalScoreEntity.builder().totalYield(BigDecimal.valueOf(20000000)).profit(BigDecimal.valueOf(70.2))
                         .id(5L).build(),
-                TotalScoreEntity.builder().totalYield(new BigDecimal(15000000)).profit(new BigDecimal("60.2"))
+                TotalScoreEntity.builder().totalYield(BigDecimal.valueOf(15000000)).profit(BigDecimal.valueOf(60.2))
                         .id(6L).build()
         );
 
