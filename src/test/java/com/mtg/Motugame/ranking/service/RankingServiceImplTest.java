@@ -3,6 +3,8 @@ package com.mtg.Motugame.ranking.service;
 import com.mtg.Motugame.entity.*;
 import com.mtg.Motugame.exception.ExceptionMessage;
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
+import com.mtg.Motugame.ranking.dto.RankResponseDto;
+import com.mtg.Motugame.ranking.dto.RankSqlResultDto;
 import com.mtg.Motugame.ranking.dto.ScoreInfo;
 import com.mtg.Motugame.ranking.repository.ScoreRecordRepository;
 import com.mtg.Motugame.ranking.repository.TotalScoreRepository;
@@ -133,16 +135,16 @@ class RankingServiceImplTest {
 
         given(totalScoreRepository.save(any()))
                 .willReturn(TotalScoreEntity.builder()
-                        .profit(new BigDecimal(43.4))
-                        .totalYield(new BigDecimal(102402))
+                        .profit(BigDecimal.valueOf(43.4))
+                        .totalYield(BigDecimal.valueOf(102402))
                         .build());
 
         given(stockInfoRepository.findById(any()))
                 .willReturn(Optional.ofNullable(null));
 
-        Assertions.assertThatThrownBy(()->{
-            rankingService.saveScore(rankRequest);
-        }).isInstanceOf(IllegalArgumentException.class)
+        Assertions.assertThatThrownBy(() -> {
+                    rankingService.saveScore(rankRequest);
+                }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(ExceptionMessage.NO_DATA_ERROR);
     }
 
@@ -154,14 +156,14 @@ class RankingServiceImplTest {
                 .willReturn(
                         List.of(
                                 TotalScoreEntity.builder()
-                                        .profit(new BigDecimal(74.2))
-                                        .totalYield(new BigDecimal(742000))
+                                        .profit(BigDecimal.valueOf(74.2))
+                                        .totalYield(BigDecimal.valueOf(742000))
                                         .user(UserEntity.builder()
                                                 .id(1L)
                                                 .nickname("박지원").build()).build(),
                                 TotalScoreEntity.builder()
-                                        .profit(new BigDecimal(54.2))
-                                        .totalYield(new BigDecimal(542000))
+                                        .profit(BigDecimal.valueOf(54.2))
+                                        .totalYield(BigDecimal.valueOf(542000))
                                         .user(UserEntity.builder()
                                                 .id(2L)
                                                 .nickname("유해찬").build()).build()
@@ -170,7 +172,7 @@ class RankingServiceImplTest {
 
         //when
         int ranking = rankingService.getRank(RankRequestDto.builder().
-                        nickname("박지원").totalProfit(new BigDecimal(74.2)).build())
+                        nickname("박지원").totalProfit(BigDecimal.valueOf(74.2)).build())
                 .getRank();
 
         //then
@@ -185,14 +187,14 @@ class RankingServiceImplTest {
                 .willReturn(
                         List.of(
                                 TotalScoreEntity.builder()
-                                        .profit(new BigDecimal(74.2))
-                                        .totalYield(new BigDecimal(742000))
+                                        .profit(BigDecimal.valueOf(74.2))
+                                        .totalYield(BigDecimal.valueOf(742000))
                                         .user(UserEntity.builder()
                                                 .id(1L)
                                                 .nickname("박지원").build()).build(),
                                 TotalScoreEntity.builder()
-                                        .profit(new BigDecimal(54.2))
-                                        .totalYield(new BigDecimal(542000))
+                                        .profit(BigDecimal.valueOf(54.2))
+                                        .totalYield(BigDecimal.valueOf(542000))
                                         .user(UserEntity.builder()
                                                 .id(2L)
                                                 .nickname("박지원").build()).build()
@@ -201,7 +203,7 @@ class RankingServiceImplTest {
 
         //when
         int ranking = rankingService.getRank(RankRequestDto.builder().
-                nickname("박지원").totalProfit(new BigDecimal(54.2)).build())
+                        nickname("박지원").totalProfit(BigDecimal.valueOf(54.2)).build())
                 .getRank();
 
         //then
@@ -212,32 +214,32 @@ class RankingServiceImplTest {
         List<ScoreInfo> scoreInfoList = new ArrayList<>();
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000001")
-                .profit(new BigDecimal("10.12"))
-                .yield(new BigDecimal("100000")).build());
+                .profit(BigDecimal.valueOf(10.12))
+                .yield(BigDecimal.valueOf(100000)).build());
 
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000002")
-                .profit(new BigDecimal("18.32"))
-                .yield(new BigDecimal("200000")).build());
+                .profit(BigDecimal.valueOf(18.32))
+                .yield(BigDecimal.valueOf(200000)).build());
 
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000003")
-                .profit(new BigDecimal("29.12"))
-                .yield(new BigDecimal("300000")).build());
+                .profit(BigDecimal.valueOf(29.12))
+                .yield(BigDecimal.valueOf(300000)).build());
 
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000004")
-                .profit(new BigDecimal("9.12"))
-                .yield(new BigDecimal("400000")).build());
+                .profit(BigDecimal.valueOf(9.12))
+                .yield(BigDecimal.valueOf(400000)).build());
 
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000005")
-                .profit(new BigDecimal("10.12"))
-                .yield(new BigDecimal("500000")).build());
+                .profit(BigDecimal.valueOf(10.12))
+                .yield(BigDecimal.valueOf(500000)).build());
 
         RankRequestDto request = RankRequestDto.builder()
-                .totalYield(new BigDecimal("1500000"))
-                .totalProfit(new BigDecimal("23.12"))
+                .totalYield(BigDecimal.valueOf(1500000))
+                .totalProfit(BigDecimal.valueOf(23.12))
                 .nickname("jiwon")
                 .scoreInfoList(scoreInfoList)
                 .build();
@@ -245,64 +247,48 @@ class RankingServiceImplTest {
         return request;
     }
 
-//    @Test
-//    @DisplayName("정렬된 랭킹값을 제대로 담는지 확인")
-//    void getSortedRankingSuccessfully() {
-//        //given
-//        class Test implements RankResponseWrapper{
-//
-//            @Override
-//            public Long getId() {
-//                return 1L;
-//            }
-//
-//            @Override
-//            public Long getUserId() {
-//                return 2L;
-//            }
-//
-//            @Override
-//            public BigDecimal getProfit() {
-//                return new BigDecimal(10);
-//            }
-//
-//            @Override
-//            public BigDecimal getTotalYield() {
-//                return new BigDecimal(1557);
-//            }
-//
-//            @Override
-//            public Integer getNum() {
-//                return 2;
-//            }
-//        };
-//        Test test = new Test();
-//        List<RankResponseWrapper> users = new ArrayList<>();
-//        List<RankResponseDto> result = new ArrayList<>();
-//        users.add(test);
-//        given(totalScoreRepository.findRank(anyInt())).willReturn(users);
-//        UserEntity userEntity = UserEntity.builder().nickname("KH").build();
-//        Optional<UserEntity> userEntityOptional = Optional.ofNullable(userEntity);
-//        given(userRepository.findById(anyLong())).willReturn(userEntityOptional);
-//        //when
-//        result = rankingService.getSortedRank(anyInt());
-//        //then
-//        Assertions.assertThat(result.get(0).getNickname()).isEqualTo("KH");
-//        Assertions.assertThat(result.get(0).getRank()).isEqualTo(2);
-//        Assertions.assertThat(result.get(0).getProfit()).isEqualTo(BigDecimal.valueOf(10));
-//        Assertions.assertThat(result.get(0).getYield()).isEqualTo(BigDecimal.valueOf(1557));
-//
-//    }
-//    @Test
-//    @DisplayName("반환된 랭킹 비어있을 경우")
-//    void emptyRank(){
-//        //then
-//        Exception exception = assertThrows(IllegalArgumentException.class,
-//                () -> rankingService.getSortedRank(anyInt()));
-//
-//        String expectedMessage = "no such data";
-//        String actualMessage = exception.getMessage();
-//
-//        assertTrue(actualMessage.contains(expectedMessage));
-//    }
+    @Test
+    @DisplayName("정렬된 랭킹값을 제대로 담는지 확인")
+    void getSortedRankingSuccessfully() {
+        //given
+        RankSqlResultDto rankSqlResultDto = RankSqlResultDto.builder()
+                .id(1L)
+                .num(2)
+                .userId(2L)
+                .profit(BigDecimal.valueOf(10))
+                .totalYield(BigDecimal.valueOf(1557))
+                .build();
+
+        List<RankSqlResultDto> users = new ArrayList<>();
+        List<RankResponseDto> result = new ArrayList<>();
+        users.add(rankSqlResultDto);
+
+        given(totalScoreRepository.findRank(anyInt())).willReturn(users);
+        UserEntity userEntity = UserEntity.builder().nickname("KH").build();
+        Optional<UserEntity> userEntityOptional = Optional.ofNullable(userEntity);
+        given(userRepository.findById(anyLong())).willReturn(userEntityOptional);
+
+        //when
+        result = rankingService.getSortedRank(anyInt());
+        //then
+        Assertions.assertThat(result.get(0).getNickname()).isEqualTo("KH");
+        Assertions.assertThat(result.get(0).getRank()).isEqualTo(2);
+        Assertions.assertThat(result.get(0).getProfit()).isEqualTo(BigDecimal.valueOf(10));
+        Assertions.assertThat(result.get(0).getYield()).isEqualTo(BigDecimal.valueOf(1557));
+
+    }
+
+    @Test
+    @DisplayName("반환된 랭킹 비어있을 경우")
+    void emptyRank() {
+        //then
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> rankingService.getSortedRank(anyInt()));
+
+        String expectedMessage = ExceptionMessage.NO_DATA_ERROR;
+        
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
 }

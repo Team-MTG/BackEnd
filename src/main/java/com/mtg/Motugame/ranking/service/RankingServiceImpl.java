@@ -93,7 +93,7 @@ public class RankingServiceImpl implements RankingService {
 
     @Override
     public List<RankResponseDto> getSortedRank(int cnt) {
-        cnt = (cnt - 1) * 30;
+        cnt = (cnt - 1) * 5;
         List<RankSqlResultDto> users = totalScoreRepository.findRank(cnt);
         List<RankResponseDto> list = new ArrayList<>();
 
