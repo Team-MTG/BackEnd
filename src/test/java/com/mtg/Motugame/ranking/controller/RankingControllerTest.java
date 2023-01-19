@@ -46,19 +46,18 @@ class RankingControllerTest {
         //given
         RankRequestDto request = RankRequestDto.builder()
                 .nickname("jiwon")
-                .totalProfit(new BigDecimal("54.2"))
-                .totalYield(new BigDecimal(15315147))
-                .scoreInfoList(List.of(
-                        GameInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
-                        GameInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
-
+                .totalProfit(54.2)
+                .totalYield(15315147.0)
+                .gameInfo(List.of(
+                        GameInfo.builder().stockName("삼성전자").profit(23.4).yield(153124.0).build(),
+                        GameInfo.builder().stockName("SK하이닉스").profit(43.4).yield(1242124.0).build()
                 )).build();
 
         RankResponseDto response = RankResponseDto.builder()
                 .rank(1)
                 .nickname("jiwon")
-                .profit(new BigDecimal("54.2"))
-                .yield(new BigDecimal(15315147))
+                .profit(BigDecimal.valueOf(54.2))
+                .yield(BigDecimal.valueOf(15315147))
                 .build();
         given(rankingService.getRank(any()))
                 .willReturn(response);
@@ -79,12 +78,11 @@ class RankingControllerTest {
     void getRankingEmptyNickname() throws Exception {
         //given
         RankRequestDto request = RankRequestDto.builder()
-                .totalProfit(new BigDecimal("54.2"))
-                .totalYield(new BigDecimal(15315147))
-                .scoreInfoList(List.of(
-                        GameInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
-                        GameInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
-
+                .totalProfit(54.2)
+                .totalYield(15315147.0)
+                .gameInfo(List.of(
+                        GameInfo.builder().stockName("삼성전자").profit(23.4).yield(153124.0).build(),
+                        GameInfo.builder().stockName("SK하이닉스").profit(43.4).yield(1242124.0).build()
                 )).build();
 
         //when
@@ -103,11 +101,10 @@ class RankingControllerTest {
         //given
         RankRequestDto request = RankRequestDto.builder()
                 .nickname("jiwon")
-                .totalYield(new BigDecimal(15315147))
-                .scoreInfoList(List.of(
-                        GameInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
-                        GameInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
-
+                .totalYield(15315147.0)
+                .gameInfo(List.of(
+                        GameInfo.builder().stockName("삼성전자").profit(23.4).yield(153124.0).build(),
+                        GameInfo.builder().stockName("SK하이닉스").profit(43.4).yield(1242124.0).build()
                 )).build();
 
         //when
@@ -129,8 +126,8 @@ class RankingControllerTest {
         RankResponseDto response = RankResponseDto.builder()
                 .rank(1)
                 .nickname("KH")
-                .profit(new BigDecimal("55.5"))
-                .yield(new BigDecimal(15555555))
+                .profit(BigDecimal.valueOf(55.5))
+                .yield(BigDecimal.valueOf(15555555))
                 .build();
         list.add(response);
 
@@ -140,9 +137,10 @@ class RankingControllerTest {
 
         //when
         mockMvc.perform(get("/api/rankings")
-                        .param("start","1"))
+                        .param("start", "1"))
                 .andExpect(status().isOk())
                 .andExpect(header().exists("X-Total-Count"))
+                .andExpect(header().exists("Access-Control-Expose-Headers"))
                 .andDo(print());
     }
 
@@ -157,7 +155,7 @@ class RankingControllerTest {
 
     @Test
     @DisplayName("헤더에 주식데이터 개수 담기 성공")
-    public void getHeadRandomStockSuccess() throws Exception{
+    public void getHeadRandomStockSuccess() throws Exception {
         //given
 
         given(rankingService.getHeadRank()).willReturn(0);
@@ -165,6 +163,7 @@ class RankingControllerTest {
         //when
         mockMvc.perform(head("/api/rankings")) //request의 헤더에 추가하는 것이다.
                 .andExpect(header().exists("X-Total-Count"))
+                .andExpect(header().exists("Access-Control-Expose-Headers"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
