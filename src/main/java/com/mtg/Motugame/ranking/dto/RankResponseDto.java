@@ -23,4 +23,6 @@ public class RankResponseDto {
 
     private BigDecimal yield;
 
+    private Long sharedNumber;
+
 }

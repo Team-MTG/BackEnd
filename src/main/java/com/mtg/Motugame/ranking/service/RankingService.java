@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface RankingService {
 
-    void saveScore(RankRequestDto rankRequestDto);
+    Long saveScore(RankRequestDto rankRequestDto);
 
-    RankResponseDto getRank(RankRequestDto rankRequestDto);
+    RankResponseDto getRank(RankRequestDto rankRequestDto, Long sharedNumber);
 
     List<RankResponseDto> getSortedRank(int cnt);
 }

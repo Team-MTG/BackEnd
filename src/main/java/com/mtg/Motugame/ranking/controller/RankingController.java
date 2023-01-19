@@ -20,8 +20,8 @@ public class RankingController {
 
     @PostMapping("/rankings")
     public ResponseEntity<RankResponseDto> gameResult(@Valid @RequestBody RankRequestDto rankRequestDto) {
-        rankingService.saveScore(rankRequestDto);
-        return ResponseEntity.ok().body(rankingService.getRank(rankRequestDto));
+        Long sharedNumber = rankingService.saveScore(rankRequestDto);
+        return ResponseEntity.ok().body(rankingService.getRank(rankRequestDto, sharedNumber));
     }
 
     @GetMapping("/rankings")

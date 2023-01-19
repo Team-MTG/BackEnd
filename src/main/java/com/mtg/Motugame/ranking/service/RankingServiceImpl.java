@@ -31,7 +31,7 @@ public class RankingServiceImpl implements RankingService {
     private final StockInfoRepository stockInfoRepository;
 
 
-    public void saveScore(RankRequestDto rankRequestDto) {
+    public Long saveScore(RankRequestDto rankRequestDto) {
         List<ScoreInfo> scoreInfoList = rankRequestDto.getScoreInfoList();
 
         UserEntity userEntity = saveUser(rankRequestDto);
@@ -53,16 +53,19 @@ public class RankingServiceImpl implements RankingService {
                     .yield(scoreInfo.getYield())
                     .build());
         }
+
+        return totalScore.getId();
     }
 
 
     @Override
-    public RankResponseDto getRank(RankRequestDto rankRequestDto) {
+    public RankResponseDto getRank(RankRequestDto rankRequestDto, Long sharedNumber) {
         return RankResponseDto.builder()
                 .nickname(rankRequestDto.getNickname())
                 .profit(rankRequestDto.getTotalProfit())
                 .yield(rankRequestDto.getTotalYield())
                 .rank(findRank(rankRequestDto.getNickname(), rankRequestDto.getTotalProfit()))
+                .sharedNumber(sharedNumber)
                 .build();
     }
 
