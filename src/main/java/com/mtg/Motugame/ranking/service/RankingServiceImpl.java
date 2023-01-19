@@ -32,25 +32,25 @@ public class RankingServiceImpl implements RankingService {
 
 
     public void saveScore(RankRequestDto rankRequestDto) {
-        List<ScoreInfo> scoreInfoList = rankRequestDto.getScoreInfoList();
+        List<GameInfo> gameInfoList = rankRequestDto.getGameInfo();
 
         UserEntity userEntity = saveUser(rankRequestDto);
 
         TotalScoreEntity totalScore = totalScoreRepository.save(TotalScoreEntity.builder()
-                .profit(rankRequestDto.getTotalProfit())
-                .totalYield(rankRequestDto.getTotalYield())
+                .profit(BigDecimal.valueOf(rankRequestDto.getTotalProfit()))
+                .totalYield(BigDecimal.valueOf(rankRequestDto.getTotalYield()))
                 .user(userEntity)
                 .build());
 
-        for (ScoreInfo scoreInfo : scoreInfoList) {
-            StockInfoEntity stockInfoEntity = stockInfoRepository.findById(scoreInfo.getStockCode())
+        for (GameInfo gameInfo : gameInfoList) {
+            StockInfoEntity stockInfoEntity = stockInfoRepository.findByStockName(gameInfo.getStockName())
                     .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
 
             scoreRecordRepository.save(ScoreRecordEntity.builder()
                     .totalScore(totalScore)
                     .stockInfo(stockInfoEntity)
-                    .profit(scoreInfo.getProfit())
-                    .yield(scoreInfo.getYield())
+                    .profit(BigDecimal.valueOf(gameInfo.getProfit()))
+                    .yield(BigDecimal.valueOf(gameInfo.getYield()))
                     .build());
         }
     }
@@ -60,9 +60,9 @@ public class RankingServiceImpl implements RankingService {
     public RankResponseDto getRank(RankRequestDto rankRequestDto) {
         return RankResponseDto.builder()
                 .nickname(rankRequestDto.getNickname())
-                .profit(rankRequestDto.getTotalProfit())
-                .yield(rankRequestDto.getTotalYield())
-                .rank(findRank(rankRequestDto.getNickname(), rankRequestDto.getTotalProfit()))
+                .profit(BigDecimal.valueOf(rankRequestDto.getTotalProfit()))
+                .yield(BigDecimal.valueOf(rankRequestDto.getTotalYield()))
+                .rank(findRank(rankRequestDto.getNickname(), BigDecimal.valueOf(rankRequestDto.getTotalProfit())))
                 .build();
     }
 

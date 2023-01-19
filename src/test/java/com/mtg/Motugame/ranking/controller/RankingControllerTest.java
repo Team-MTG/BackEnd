@@ -3,7 +3,7 @@ package com.mtg.Motugame.ranking.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
-import com.mtg.Motugame.ranking.dto.ScoreInfo;
+import com.mtg.Motugame.ranking.dto.GameInfo;
 import com.mtg.Motugame.ranking.service.RankingServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,12 +46,11 @@ class RankingControllerTest {
         //given
         RankRequestDto request = RankRequestDto.builder()
                 .nickname("jiwon")
-                .totalProfit(BigDecimal.valueOf(54.2))
-                .totalYield(BigDecimal.valueOf(15315147))
-                .scoreInfoList(List.of(
-                        ScoreInfo.builder().stockCode("00001").profit(BigDecimal.valueOf(23.4)).yield(BigDecimal.valueOf(153124)).build(),
-                        ScoreInfo.builder().stockCode("00002").profit(BigDecimal.valueOf(43.4)).yield(BigDecimal.valueOf(1242124)).build()
-
+                .totalProfit(54.2)
+                .totalYield(15315147.0)
+                .gameInfo(List.of(
+                        GameInfo.builder().stockName("삼성전자").profit(23.4).yield(153124.0).build(),
+                        GameInfo.builder().stockName("SK하이닉스").profit(43.4).yield(1242124.0).build()
                 )).build();
 
         RankResponseDto response = RankResponseDto.builder()
@@ -79,12 +78,11 @@ class RankingControllerTest {
     void getRankingEmptyNickname() throws Exception {
         //given
         RankRequestDto request = RankRequestDto.builder()
-                .totalProfit(BigDecimal.valueOf(54.2))
-                .totalYield(BigDecimal.valueOf(15315147))
-                .scoreInfoList(List.of(
-                        ScoreInfo.builder().stockCode("00001").profit(BigDecimal.valueOf(23.4)).yield(BigDecimal.valueOf(153124)).build(),
-                        ScoreInfo.builder().stockCode("00002").profit(BigDecimal.valueOf(43.4)).yield(BigDecimal.valueOf(1242124)).build()
-
+                .totalProfit(54.2)
+                .totalYield(15315147.0)
+                .gameInfo(List.of(
+                        GameInfo.builder().stockName("삼성전자").profit(23.4).yield(153124.0).build(),
+                        GameInfo.builder().stockName("SK하이닉스").profit(43.4).yield(1242124.0).build()
                 )).build();
 
         //when
@@ -103,11 +101,10 @@ class RankingControllerTest {
         //given
         RankRequestDto request = RankRequestDto.builder()
                 .nickname("jiwon")
-                .totalYield(BigDecimal.valueOf(15315147))
-                .scoreInfoList(List.of(
-                        ScoreInfo.builder().stockCode("00001").profit(BigDecimal.valueOf(23.4)).yield(BigDecimal.valueOf(153124)).build(),
-                        ScoreInfo.builder().stockCode("00002").profit(BigDecimal.valueOf(43.4)).yield(BigDecimal.valueOf(1242124)).build()
-
+                .totalYield(15315147.0)
+                .gameInfo(List.of(
+                        GameInfo.builder().stockName("삼성전자").profit(23.4).yield(153124.0).build(),
+                        GameInfo.builder().stockName("SK하이닉스").profit(43.4).yield(1242124.0).build()
                 )).build();
 
         //when

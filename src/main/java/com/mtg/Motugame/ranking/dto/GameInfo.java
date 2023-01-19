@@ -11,10 +11,10 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScoreInfo {
-    private String stockCode;
+public class GameInfo {
+    private String stockName;
 
-    private BigDecimal profit;
+    private Double profit;
 
-    private BigDecimal yield;
+    private Double yield;
 }
