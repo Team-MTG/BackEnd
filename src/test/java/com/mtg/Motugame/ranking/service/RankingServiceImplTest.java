@@ -286,7 +286,7 @@ class RankingServiceImplTest {
                 () -> rankingService.getSortedRank(anyInt()));
 
         String expectedMessage = ExceptionMessage.NO_DATA_ERROR;
-        ;
+        
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
