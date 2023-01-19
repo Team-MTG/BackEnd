@@ -170,7 +170,7 @@ class RankingServiceImplTest {
 
         //when
         int ranking = rankingService.getRank(RankRequestDto.builder().
-                        nickname("박지원").totalProfit(new BigDecimal(74.2)).build())
+                        nickname("박지원").totalProfit(new BigDecimal(74.2)).build(),1L)
                 .getRank();
 
         //then
@@ -201,7 +201,7 @@ class RankingServiceImplTest {
 
         //when
         int ranking = rankingService.getRank(RankRequestDto.builder().
-                nickname("박지원").totalProfit(new BigDecimal(54.2)).build())
+                nickname("박지원").totalProfit(new BigDecimal(54.2)).build(),1L)
                 .getRank();
 
         //then
