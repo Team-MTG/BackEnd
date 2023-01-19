@@ -46,19 +46,19 @@ class RankingControllerTest {
         //given
         RankRequestDto request = RankRequestDto.builder()
                 .nickname("jiwon")
-                .totalProfit(new BigDecimal("54.2"))
-                .totalYield(new BigDecimal(15315147))
+                .totalProfit(BigDecimal.valueOf(54.2))
+                .totalYield(BigDecimal.valueOf(15315147))
                 .scoreInfoList(List.of(
-                        ScoreInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
-                        ScoreInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
+                        ScoreInfo.builder().stockCode("00001").profit(BigDecimal.valueOf(23.4)).yield(BigDecimal.valueOf(153124)).build(),
+                        ScoreInfo.builder().stockCode("00002").profit(BigDecimal.valueOf(43.4)).yield(BigDecimal.valueOf(1242124)).build()
 
                 )).build();
 
         RankResponseDto response = RankResponseDto.builder()
                 .rank(1)
                 .nickname("jiwon")
-                .profit(new BigDecimal("54.2"))
-                .yield(new BigDecimal(15315147))
+                .profit(BigDecimal.valueOf(54.2))
+                .yield(BigDecimal.valueOf(15315147))
                 .build();
         given(rankingService.getRank(any()))
                 .willReturn(response);
@@ -79,11 +79,11 @@ class RankingControllerTest {
     void getRankingEmptyNickname() throws Exception {
         //given
         RankRequestDto request = RankRequestDto.builder()
-                .totalProfit(new BigDecimal("54.2"))
-                .totalYield(new BigDecimal(15315147))
+                .totalProfit(BigDecimal.valueOf(54.2))
+                .totalYield(BigDecimal.valueOf(15315147))
                 .scoreInfoList(List.of(
-                        ScoreInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
-                        ScoreInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
+                        ScoreInfo.builder().stockCode("00001").profit(BigDecimal.valueOf(23.4)).yield(BigDecimal.valueOf(153124)).build(),
+                        ScoreInfo.builder().stockCode("00002").profit(BigDecimal.valueOf(43.4)).yield(BigDecimal.valueOf(1242124)).build()
 
                 )).build();
 
@@ -103,10 +103,10 @@ class RankingControllerTest {
         //given
         RankRequestDto request = RankRequestDto.builder()
                 .nickname("jiwon")
-                .totalYield(new BigDecimal(15315147))
+                .totalYield(BigDecimal.valueOf(15315147))
                 .scoreInfoList(List.of(
-                        ScoreInfo.builder().stockCode("00001").profit(new BigDecimal("23.4")).yield(new BigDecimal(153124)).build(),
-                        ScoreInfo.builder().stockCode("00002").profit(new BigDecimal("43.4")).yield(new BigDecimal(1242124)).build()
+                        ScoreInfo.builder().stockCode("00001").profit(BigDecimal.valueOf(23.4)).yield(BigDecimal.valueOf(153124)).build(),
+                        ScoreInfo.builder().stockCode("00002").profit(BigDecimal.valueOf(43.4)).yield(BigDecimal.valueOf(1242124)).build()
 
                 )).build();
 
@@ -129,8 +129,8 @@ class RankingControllerTest {
         RankResponseDto response = RankResponseDto.builder()
                 .rank(1)
                 .nickname("KH")
-                .profit(new BigDecimal("55.5"))
-                .yield(new BigDecimal(15555555))
+                .profit(BigDecimal.valueOf(55.5))
+                .yield(BigDecimal.valueOf(15555555))
                 .build();
         list.add(response);
 

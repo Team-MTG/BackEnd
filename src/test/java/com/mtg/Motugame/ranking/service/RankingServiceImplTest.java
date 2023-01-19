@@ -135,8 +135,8 @@ class RankingServiceImplTest {
 
         given(totalScoreRepository.save(any()))
                 .willReturn(TotalScoreEntity.builder()
-                        .profit(new BigDecimal(43.4))
-                        .totalYield(new BigDecimal(102402))
+                        .profit(BigDecimal.valueOf(43.4))
+                        .totalYield(BigDecimal.valueOf(102402))
                         .build());
 
         given(stockInfoRepository.findById(any()))
@@ -156,14 +156,14 @@ class RankingServiceImplTest {
                 .willReturn(
                         List.of(
                                 TotalScoreEntity.builder()
-                                        .profit(new BigDecimal(74.2))
-                                        .totalYield(new BigDecimal(742000))
+                                        .profit(BigDecimal.valueOf(74.2))
+                                        .totalYield(BigDecimal.valueOf(742000))
                                         .user(UserEntity.builder()
                                                 .id(1L)
                                                 .nickname("박지원").build()).build(),
                                 TotalScoreEntity.builder()
-                                        .profit(new BigDecimal(54.2))
-                                        .totalYield(new BigDecimal(542000))
+                                        .profit(BigDecimal.valueOf(54.2))
+                                        .totalYield(BigDecimal.valueOf(542000))
                                         .user(UserEntity.builder()
                                                 .id(2L)
                                                 .nickname("유해찬").build()).build()
@@ -172,7 +172,7 @@ class RankingServiceImplTest {
 
         //when
         int ranking = rankingService.getRank(RankRequestDto.builder().
-                        nickname("박지원").totalProfit(new BigDecimal(74.2)).build())
+                        nickname("박지원").totalProfit(BigDecimal.valueOf(74.2)).build())
                 .getRank();
 
         //then
@@ -187,14 +187,14 @@ class RankingServiceImplTest {
                 .willReturn(
                         List.of(
                                 TotalScoreEntity.builder()
-                                        .profit(new BigDecimal(74.2))
-                                        .totalYield(new BigDecimal(742000))
+                                        .profit(BigDecimal.valueOf(74.2))
+                                        .totalYield(BigDecimal.valueOf(742000))
                                         .user(UserEntity.builder()
                                                 .id(1L)
                                                 .nickname("박지원").build()).build(),
                                 TotalScoreEntity.builder()
-                                        .profit(new BigDecimal(54.2))
-                                        .totalYield(new BigDecimal(542000))
+                                        .profit(BigDecimal.valueOf(54.2))
+                                        .totalYield(BigDecimal.valueOf(542000))
                                         .user(UserEntity.builder()
                                                 .id(2L)
                                                 .nickname("박지원").build()).build()
@@ -203,7 +203,7 @@ class RankingServiceImplTest {
 
         //when
         int ranking = rankingService.getRank(RankRequestDto.builder().
-                        nickname("박지원").totalProfit(new BigDecimal(54.2)).build())
+                        nickname("박지원").totalProfit(BigDecimal.valueOf(54.2)).build())
                 .getRank();
 
         //then
@@ -214,32 +214,32 @@ class RankingServiceImplTest {
         List<ScoreInfo> scoreInfoList = new ArrayList<>();
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000001")
-                .profit(new BigDecimal("10.12"))
-                .yield(new BigDecimal("100000")).build());
+                .profit(BigDecimal.valueOf(10.12))
+                .yield(BigDecimal.valueOf(100000)).build());
 
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000002")
-                .profit(new BigDecimal("18.32"))
-                .yield(new BigDecimal("200000")).build());
+                .profit(BigDecimal.valueOf(18.32))
+                .yield(BigDecimal.valueOf(200000)).build());
 
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000003")
-                .profit(new BigDecimal("29.12"))
-                .yield(new BigDecimal("300000")).build());
+                .profit(BigDecimal.valueOf(29.12))
+                .yield(BigDecimal.valueOf(300000)).build());
 
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000004")
-                .profit(new BigDecimal("9.12"))
-                .yield(new BigDecimal("400000")).build());
+                .profit(BigDecimal.valueOf(9.12))
+                .yield(BigDecimal.valueOf(400000)).build());
 
         scoreInfoList.add(ScoreInfo.builder()
                 .stockCode("000005")
-                .profit(new BigDecimal("10.12"))
-                .yield(new BigDecimal("500000")).build());
+                .profit(BigDecimal.valueOf(10.12))
+                .yield(BigDecimal.valueOf(500000)).build());
 
         RankRequestDto request = RankRequestDto.builder()
-                .totalYield(new BigDecimal("1500000"))
-                .totalProfit(new BigDecimal("23.12"))
+                .totalYield(BigDecimal.valueOf(1500000))
+                .totalProfit(BigDecimal.valueOf(23.12))
                 .nickname("jiwon")
                 .scoreInfoList(scoreInfoList)
                 .build();
@@ -255,8 +255,8 @@ class RankingServiceImplTest {
                 .id(1L)
                 .num(2)
                 .userId(2L)
-                .profit(new BigDecimal(10))
-                .totalYield(new BigDecimal(1557))
+                .profit(BigDecimal.valueOf(10))
+                .totalYield(BigDecimal.valueOf(1557))
                 .build();
 
         List<RankSqlResultDto> users = new ArrayList<>();
@@ -285,7 +285,8 @@ class RankingServiceImplTest {
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> rankingService.getSortedRank(anyInt()));
 
-        String expectedMessage = "no such data";
+        String expectedMessage = ExceptionMessage.NO_DATA_ERROR;
+        ;
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
