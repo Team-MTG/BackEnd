@@ -93,6 +93,8 @@ public class RankingServiceImpl implements RankingService {
 
     @Override
     public List<RankResponseDto> getSortedRank(int cnt) {
+        if (cnt <= 0)
+            throw new IllegalArgumentException(ExceptionMessage.INVALID_REQUEST);
         cnt = (cnt - 1) * 5;
         List<RankSqlResultDto> users = totalScoreRepository.findRank(cnt);
         List<RankResponseDto> list = new ArrayList<>();
