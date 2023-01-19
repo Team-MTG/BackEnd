@@ -19,7 +19,7 @@ public class RankingController {
     private final RankingServiceImpl rankingService;
 
     @PostMapping("/rankings")
-    public ResponseEntity<RankResponseDto> gameResult(@Valid @RequestBody RankRequestDto rankRequestDto){
+    public ResponseEntity<RankResponseDto> gameResult(@Valid @RequestBody RankRequestDto rankRequestDto) {
         rankingService.saveScore(rankRequestDto);
         return ResponseEntity.ok().body(rankingService.getRank(rankRequestDto));
     }
@@ -29,7 +29,7 @@ public class RankingController {
         List<RankResponseDto> list = rankingService.getSortedRank(cnt);
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Total-Count", Integer.toString(rankingService.getHeadRank()));
-
+        headers.set("Access-Control-Expose-Headers", "X-Total-Count");
         return ResponseEntity.ok().headers(headers).body(list);
     }
 
@@ -37,7 +37,7 @@ public class RankingController {
     public ResponseEntity<Void> getHeadRank() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Total-Count", Integer.toString(rankingService.getHeadRank()));
-
+        headers.set("Access-Control-Expose-Headers", "X-Total-Count");
         return ResponseEntity.ok().headers(headers).body(null);
     }
 }
