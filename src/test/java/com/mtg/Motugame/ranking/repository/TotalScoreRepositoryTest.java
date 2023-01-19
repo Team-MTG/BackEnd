@@ -2,6 +2,7 @@ package com.mtg.Motugame.ranking.repository;
 
 import com.mtg.Motugame.entity.TotalScoreEntity;
 import com.mtg.Motugame.entity.UserEntity;
+import com.mtg.Motugame.ranking.dto.RankSqlResultDto;
 import com.mtg.Motugame.user.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("h2")
@@ -49,5 +49,41 @@ class TotalScoreRepositoryTest {
         //then
         Assertions.assertThat(findData.get(0).getUser().getNickname()).isEqualTo("jiwon");
         Assertions.assertThat(findData.get(1).getUser().getNickname()).isEqualTo("haechan");
+    }
+
+    @Test
+    @DisplayName("정렬된 주식 랭킹 5개 조회 성공 테스트")
+    public void findSortedRankSuccess() {
+        //given
+
+        List<TotalScoreEntity> totalScoreEntities = List.of(
+                TotalScoreEntity.builder().totalYield(new BigDecimal(12942920)).profit(new BigDecimal("54.2"))
+                        .id(1L).build(),
+                TotalScoreEntity.builder().totalYield(new BigDecimal(21491242)).profit(new BigDecimal("74.2"))
+                        .id(2L).build(),
+                TotalScoreEntity.builder().totalYield(new BigDecimal(13942920)).profit(new BigDecimal("55.2"))
+                        .id(3L).build(),
+                TotalScoreEntity.builder().totalYield(new BigDecimal(20491242)).profit(new BigDecimal("73.2"))
+                        .id(4L).build(),
+                TotalScoreEntity.builder().totalYield(new BigDecimal(20000000)).profit(new BigDecimal("70.2"))
+                        .id(5L).build(),
+                TotalScoreEntity.builder().totalYield(new BigDecimal(15000000)).profit(new BigDecimal("60.2"))
+                        .id(6L).build()
+        );
+
+        totalScoreRepository.saveAll(totalScoreEntities);
+
+
+        //when
+        List<RankSqlResultDto> list = totalScoreRepository.findRank(0);
+
+        //then
+        Assertions.assertThat(list.size()).isEqualTo(5);
+        Assertions.assertThat(list.get(0).getId()).isEqualTo(2);
+        Assertions.assertThat(list.get(1).getId()).isEqualTo(4);
+        Assertions.assertThat(list.get(2).getId()).isEqualTo(5);
+        Assertions.assertThat(list.get(3).getId()).isEqualTo(6);
+        Assertions.assertThat(list.get(4).getId()).isEqualTo(3);
+
     }
 }
