@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -119,6 +120,41 @@ public class RankingServiceImpl implements RankingService {
             list.add(rankResponseDto);
         }
         return list;
+    }
+
+    @Override
+    public RankSharingResponseDto getRankSharing(Long sharedNumber) {
+        List<TotalScoreEntity> findRankings = totalScoreRepository.findAllByOrderByProfitDesc();
+
+        List<OtherRankDto> otherRankDtos = new ArrayList<>();
+        TotalScoreEntity userData = null;
+        long userRank = 0L;
+
+        long rank = 1L;
+        for (TotalScoreEntity findRanking : findRankings) {
+            otherRankDtos.add(OtherRankDto.builder()
+                    .nickname(findRanking.getUser().getNickname())
+                    .rank(rank)
+                    .profit(findRanking.getProfit())
+                    .yield(findRanking.getTotalYield()).build());
+
+            if(Objects.equals(findRanking.getId(), sharedNumber)) {
+                userData = findRanking;
+                userRank = rank;
+            }
+            rank++;
+        }
+
+        if (userData == null) {
+            throw new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR);
+        }
+
+        return RankSharingResponseDto.builder()
+                .myRank(userRank)
+                .nickname(userData.getUser().getNickname())
+                .myProfit(userData.getProfit())
+                .myYield(userData.getTotalYield())
+                .otherRanking(otherRankDtos).build();
     }
 
     public Integer getHeadRank() {

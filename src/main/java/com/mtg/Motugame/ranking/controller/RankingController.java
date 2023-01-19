@@ -44,6 +44,6 @@ public class RankingController {
 
     @GetMapping("/sharing")
     public ResponseEntity<RankSharingResponseDto> getSharedRanking(@RequestParam("sharedNumber") Long sharedNumber) {
-        return null;
+        return ResponseEntity.ok().body(rankingService.getRankSharing(sharedNumber));
     }
 }
