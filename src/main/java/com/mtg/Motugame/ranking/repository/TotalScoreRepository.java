@@ -14,5 +14,5 @@ public interface TotalScoreRepository extends JpaRepository<TotalScoreEntity, Lo
     List<TotalScoreEntity> findAllByOrderByProfitDesc();
 
     @Query(name = "findRank", nativeQuery = true)
-    List<RankSqlResultDto> findRank(@Param(value = "cnt") int cnt);
+    List<RankSqlResultDto> findRank(@Param(value = "start") int start, @Param(value = "end") int end);
 }

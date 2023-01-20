@@ -75,7 +75,7 @@ class TotalScoreRepositoryTest {
 
 
         //when
-        List<RankSqlResultDto> list = totalScoreRepository.findRank(0);
+        List<RankSqlResultDto> list = totalScoreRepository.findRank(0,5);
 
         //then
         Assertions.assertThat(list.size()).isEqualTo(5);

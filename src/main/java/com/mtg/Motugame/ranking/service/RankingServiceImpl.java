@@ -96,11 +96,16 @@ public class RankingServiceImpl implements RankingService {
     }
 
     @Override
-    public List<RankResponseDto> getSortedRank(int cnt) {
-        if (cnt <= 0)
-            throw new IllegalArgumentException(ExceptionMessage.INVALID_REQUEST);
-        cnt = (cnt - 1) * 5;
-        List<RankSqlResultDto> users = totalScoreRepository.findRank(cnt);
+    public List<RankResponseDto> getSortedRank(int start, int end) {
+        if (start <= 0)
+            throw new IllegalArgumentException(ExceptionMessage.INVALID_START_REQUEST);
+        if (start > end)
+            throw new IllegalArgumentException(ExceptionMessage.INVALID_END_REQUEST);
+
+        start -= 1;
+        end = end - start;
+
+        List<RankSqlResultDto> users = totalScoreRepository.findRank(start, end);
         List<RankResponseDto> list = new ArrayList<>();
 
 
@@ -140,7 +145,7 @@ public class RankingServiceImpl implements RankingService {
                     .profit(findRanking.getProfit())
                     .yield(findRanking.getTotalYield()).build());
 
-            if(Objects.equals(findRanking.getId(), sharedNumber)) {
+            if (Objects.equals(findRanking.getId(), sharedNumber)) {
                 userData = findRanking;
                 userRank = rank;
             }

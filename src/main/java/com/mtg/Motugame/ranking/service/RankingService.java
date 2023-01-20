@@ -12,7 +12,7 @@ public interface RankingService {
 
     RankResponseDto getRank(RankRequestDto rankRequestDto, Long sharedNumber);
 
-    List<RankResponseDto> getSortedRank(int cnt);
+    List<RankResponseDto> getSortedRank(int start, int end);
 
     RankSharingResponseDto getRankSharing(Long sharedNumber);
 }
