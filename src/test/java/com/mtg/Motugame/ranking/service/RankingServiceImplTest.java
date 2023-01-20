@@ -70,6 +70,7 @@ class RankingServiceImplTest {
 
         //when
         result = rankingService.getSortedRank(1, 1);
+
         //then
         Assertions.assertThat(result.get(0).getNickname()).isEqualTo("KH");
         Assertions.assertThat(result.get(0).getRank()).isEqualTo(2);
