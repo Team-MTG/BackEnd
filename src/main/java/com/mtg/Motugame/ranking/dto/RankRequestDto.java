@@ -20,9 +20,9 @@ public class RankRequestDto {
     private String nickname;
 
     @NotNull(message = "totalProfit 값은 항상 있어야합니다. ")
-    private BigDecimal totalProfit;
+    private Double totalProfit;
 
-    private BigDecimal totalYield;
+    private Double totalYield;
 
-    private List<ScoreInfo> scoreInfoList;
+    private List<GameInfo> gameInfo;
 }

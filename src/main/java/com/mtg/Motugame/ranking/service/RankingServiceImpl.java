@@ -32,26 +32,26 @@ public class RankingServiceImpl implements RankingService {
     private final StockInfoRepository stockInfoRepository;
 
 
-    public Long saveScore(RankRequestDto rankRequestDto) {
-        List<ScoreInfo> scoreInfoList = rankRequestDto.getScoreInfoList();
+    public void saveScore(RankRequestDto rankRequestDto) {
+        List<GameInfo> gameInfoList = rankRequestDto.getGameInfo();
 
         UserEntity userEntity = saveUser(rankRequestDto);
 
         TotalScoreEntity totalScore = totalScoreRepository.save(TotalScoreEntity.builder()
-                .profit(rankRequestDto.getTotalProfit())
-                .totalYield(rankRequestDto.getTotalYield())
+                .profit(BigDecimal.valueOf(rankRequestDto.getTotalProfit()))
+                .totalYield(BigDecimal.valueOf(rankRequestDto.getTotalYield()))
                 .user(userEntity)
                 .build());
 
-        for (ScoreInfo scoreInfo : scoreInfoList) {
-            StockInfoEntity stockInfoEntity = stockInfoRepository.findById(scoreInfo.getStockCode())
+        for (GameInfo gameInfo : gameInfoList) {
+            StockInfoEntity stockInfoEntity = stockInfoRepository.findByStockName(gameInfo.getStockName())
                     .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
 
             scoreRecordRepository.save(ScoreRecordEntity.builder()
                     .totalScore(totalScore)
                     .stockInfo(stockInfoEntity)
-                    .profit(scoreInfo.getProfit())
-                    .yield(scoreInfo.getYield())
+                    .profit(BigDecimal.valueOf(gameInfo.getProfit()))
+                    .yield(BigDecimal.valueOf(gameInfo.getYield()))
                     .build());
         }
 
@@ -97,7 +97,7 @@ public class RankingServiceImpl implements RankingService {
 
     @Override
     public List<RankResponseDto> getSortedRank(int cnt) {
-        cnt = (cnt - 1) * 30;
+        cnt = (cnt - 1) * 5;
         List<RankSqlResultDto> users = totalScoreRepository.findRank(cnt);
         List<RankResponseDto> list = new ArrayList<>();
 

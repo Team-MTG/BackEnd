@@ -16,7 +16,7 @@ import java.util.List;
         name = "findRank",
         query =
                 "SELECT id, user_id as userId, profit, total_yield as totalYield, row_number() over(order by profit desc) as num\n" +
-                        "FROM total_score limit 30 offset :cnt",
+                        "FROM total_score Order By num limit 5 offset :cnt",
         resultSetMapping = "ResultMapper"
 )
 @SqlResultSetMapping(
