@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -44,6 +46,51 @@ class RankingServiceImplTest {
     @InjectMocks
     private RankingServiceImpl rankingService;
 
+
+    @Test
+    @DisplayName("정렬된 랭킹값을 제대로 담는지 확인")
+    void getSortedRankingSuccessfully() {
+        //given
+        RankSqlResultDto rankSqlResultDto = RankSqlResultDto.builder()
+                .id(1L)
+                .num(2)
+                .userId(2L)
+                .profit(BigDecimal.valueOf(10))
+                .totalYield(BigDecimal.valueOf(1557))
+                .build();
+
+        List<RankSqlResultDto> users = new ArrayList<>();
+        List<RankResponseDto> result = new ArrayList<>();
+        users.add(rankSqlResultDto);
+
+        given(totalScoreRepository.findRank(anyInt())).willReturn(users);
+        UserEntity userEntity = UserEntity.builder().nickname("KH").build();
+        Optional<UserEntity> userEntityOptional = Optional.ofNullable(userEntity);
+        given(userRepository.findById(anyLong())).willReturn(userEntityOptional);
+
+        //when
+        result = rankingService.getSortedRank(1);
+        //then
+        Assertions.assertThat(result.get(0).getNickname()).isEqualTo("KH");
+        Assertions.assertThat(result.get(0).getRank()).isEqualTo(2);
+        Assertions.assertThat(result.get(0).getProfit()).isEqualTo(BigDecimal.valueOf(10));
+        Assertions.assertThat(result.get(0).getYield()).isEqualTo(BigDecimal.valueOf(1557));
+
+    }
+
+    @Test
+    @DisplayName("반환된 랭킹 비어있을 경우")
+    void emptyRank() {
+        //then
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> rankingService.getSortedRank(1));
+
+        String expectedMessage = ExceptionMessage.NO_DATA_ERROR;
+
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
 //    @Test
 //    @DisplayName("랭킹 등록 및 반환 유저가 없는 경우")
 //    void saveRanking() {
