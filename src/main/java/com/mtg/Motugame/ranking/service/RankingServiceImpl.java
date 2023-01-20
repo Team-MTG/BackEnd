@@ -32,7 +32,7 @@ public class RankingServiceImpl implements RankingService {
     private final StockInfoRepository stockInfoRepository;
 
 
-    public void saveScore(RankRequestDto rankRequestDto) {
+    public Long saveScore(RankRequestDto rankRequestDto) {
         List<GameInfo> gameInfoList = rankRequestDto.getGameInfo();
 
         UserEntity userEntity = saveUser(rankRequestDto);
@@ -63,9 +63,9 @@ public class RankingServiceImpl implements RankingService {
     public RankResponseDto getRank(RankRequestDto rankRequestDto, Long sharedNumber) {
         return RankResponseDto.builder()
                 .nickname(rankRequestDto.getNickname())
-                .profit(rankRequestDto.getTotalProfit())
-                .yield(rankRequestDto.getTotalYield())
-                .rank(findRank(rankRequestDto.getNickname(), rankRequestDto.getTotalProfit()))
+                .profit(BigDecimal.valueOf(rankRequestDto.getTotalProfit()))
+                .yield(BigDecimal.valueOf(rankRequestDto.getTotalYield()))
+                .rank(findRank(rankRequestDto.getNickname(), BigDecimal.valueOf(rankRequestDto.getTotalProfit())))
                 .sharedNumber(sharedNumber)
                 .build();
     }
