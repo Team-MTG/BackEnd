@@ -2,6 +2,7 @@ package com.mtg.Motugame.ranking.controller;
 
 import com.mtg.Motugame.ranking.dto.RankRequestDto;
 import com.mtg.Motugame.ranking.dto.RankResponseDto;
+import com.mtg.Motugame.ranking.dto.RankSharingResponseDto;
 import com.mtg.Motugame.ranking.service.RankingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +21,8 @@ public class RankingController {
 
     @PostMapping("/rankings")
     public ResponseEntity<RankResponseDto> gameResult(@Valid @RequestBody RankRequestDto rankRequestDto) {
-        rankingService.saveScore(rankRequestDto);
-        return ResponseEntity.ok().body(rankingService.getRank(rankRequestDto));
+        Long sharedNumber = rankingService.saveScore(rankRequestDto);
+        return ResponseEntity.ok().body(rankingService.getRank(rankRequestDto, sharedNumber));
     }
 
     @GetMapping("/rankings")
@@ -39,5 +40,10 @@ public class RankingController {
         headers.set("X-Total-Count", Integer.toString(rankingService.getHeadRank()));
         headers.set("Access-Control-Expose-Headers", "X-Total-Count");
         return ResponseEntity.ok().headers(headers).body(null);
+    }
+
+    @GetMapping("/sharing")
+    public ResponseEntity<RankSharingResponseDto> getSharedRanking(@RequestParam("sharedNumber") Long sharedNumber) {
+        return ResponseEntity.ok().body(rankingService.getRankSharing(sharedNumber));
     }
 }

@@ -59,7 +59,7 @@ class RankingControllerTest {
                 .profit(BigDecimal.valueOf(54.2))
                 .yield(BigDecimal.valueOf(15315147))
                 .build();
-        given(rankingService.getRank(any()))
+        given(rankingService.getRank(any(), any()))
                 .willReturn(response);
 
         //when
