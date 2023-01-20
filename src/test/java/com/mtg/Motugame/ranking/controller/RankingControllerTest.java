@@ -131,13 +131,14 @@ class RankingControllerTest {
                 .build();
         list.add(response);
 
-        given(rankingService.getSortedRank(anyInt()))
+        given(rankingService.getSortedRank(1,1))
                 .willReturn(list);
         given(rankingService.getHeadRank()).willReturn(1);
 
         //when
         mockMvc.perform(get("/api/rankings")
-                        .param("start", "1"))
+                        .param("start", "1")
+                        .param("end","1"))
                 .andExpect(status().isOk())
                 .andExpect(header().exists("X-Total-Count"))
                 .andExpect(header().exists("Access-Control-Expose-Headers"))

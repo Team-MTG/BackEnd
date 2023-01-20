@@ -63,13 +63,13 @@ class RankingServiceImplTest {
         List<RankResponseDto> result = new ArrayList<>();
         users.add(rankSqlResultDto);
 
-        given(totalScoreRepository.findRank(anyInt())).willReturn(users);
+        given(totalScoreRepository.findRank(0, 1)).willReturn(users);
         UserEntity userEntity = UserEntity.builder().nickname("KH").build();
         Optional<UserEntity> userEntityOptional = Optional.ofNullable(userEntity);
-        given(userRepository.findById(anyLong())).willReturn(userEntityOptional);
+        given(userRepository.findById(2L)).willReturn(userEntityOptional);
 
         //when
-        result = rankingService.getSortedRank(1);
+        result = rankingService.getSortedRank(1, 1);
         //then
         Assertions.assertThat(result.get(0).getNickname()).isEqualTo("KH");
         Assertions.assertThat(result.get(0).getRank()).isEqualTo(2);
@@ -83,7 +83,7 @@ class RankingServiceImplTest {
     void emptyRank() {
         //then
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> rankingService.getSortedRank(1));
+                () -> rankingService.getSortedRank(1, 1));
 
         String expectedMessage = ExceptionMessage.NO_DATA_ERROR;
 
