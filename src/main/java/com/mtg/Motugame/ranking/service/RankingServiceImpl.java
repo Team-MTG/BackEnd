@@ -150,8 +150,6 @@ public class RankingServiceImpl implements RankingService {
                 userRank = rank;
             }
             rank++;
-            if (rank > 30)
-                break;
         }
 
         if (userData == null) {
