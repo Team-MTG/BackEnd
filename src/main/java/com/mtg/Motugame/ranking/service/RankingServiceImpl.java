@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,38 +32,41 @@ public class RankingServiceImpl implements RankingService {
     private final StockInfoRepository stockInfoRepository;
 
 
-    public void saveScore(RankRequestDto rankRequestDto) {
-        List<ScoreInfo> scoreInfoList = rankRequestDto.getScoreInfoList();
+    public Long saveScore(RankRequestDto rankRequestDto) {
+        List<GameInfo> gameInfoList = rankRequestDto.getGameInfo();
 
         UserEntity userEntity = saveUser(rankRequestDto);
 
         TotalScoreEntity totalScore = totalScoreRepository.save(TotalScoreEntity.builder()
-                .profit(rankRequestDto.getTotalProfit())
-                .totalYield(rankRequestDto.getTotalYield())
+                .profit(BigDecimal.valueOf(rankRequestDto.getTotalProfit()))
+                .totalYield(BigDecimal.valueOf(rankRequestDto.getTotalYield()))
                 .user(userEntity)
                 .build());
 
-        for (ScoreInfo scoreInfo : scoreInfoList) {
-            StockInfoEntity stockInfoEntity = stockInfoRepository.findById(scoreInfo.getStockCode())
+        for (GameInfo gameInfo : gameInfoList) {
+            StockInfoEntity stockInfoEntity = stockInfoRepository.findByStockName(gameInfo.getStockName())
                     .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR));
 
             scoreRecordRepository.save(ScoreRecordEntity.builder()
                     .totalScore(totalScore)
                     .stockInfo(stockInfoEntity)
-                    .profit(scoreInfo.getProfit())
-                    .yield(scoreInfo.getYield())
+                    .profit(BigDecimal.valueOf(gameInfo.getProfit()))
+                    .yield(BigDecimal.valueOf(gameInfo.getYield()))
                     .build());
         }
+
+        return totalScore.getId();
     }
 
 
     @Override
-    public RankResponseDto getRank(RankRequestDto rankRequestDto) {
+    public RankResponseDto getRank(RankRequestDto rankRequestDto, Long sharedNumber) {
         return RankResponseDto.builder()
                 .nickname(rankRequestDto.getNickname())
-                .profit(rankRequestDto.getTotalProfit())
-                .yield(rankRequestDto.getTotalYield())
-                .rank(findRank(rankRequestDto.getNickname(), rankRequestDto.getTotalProfit()))
+                .profit(BigDecimal.valueOf(rankRequestDto.getTotalProfit()))
+                .yield(BigDecimal.valueOf(rankRequestDto.getTotalYield()))
+                .rank(findRank(rankRequestDto.getNickname(), BigDecimal.valueOf(rankRequestDto.getTotalProfit())))
+                .sharedNumber(sharedNumber)
                 .build();
     }
 
@@ -118,6 +122,43 @@ public class RankingServiceImpl implements RankingService {
             list.add(rankResponseDto);
         }
         return list;
+    }
+
+    @Override
+    public RankSharingResponseDto getRankSharing(Long sharedNumber) {
+        List<TotalScoreEntity> findRankings = totalScoreRepository.findAllByOrderByProfitDesc();
+
+        List<OtherRankDto> otherRankDtos = new ArrayList<>();
+        TotalScoreEntity userData = null;
+        long userRank = 0L;
+
+        long rank = 1L;
+        for (TotalScoreEntity findRanking : findRankings) {
+            otherRankDtos.add(OtherRankDto.builder()
+                    .nickname(findRanking.getUser().getNickname())
+                    .rank(rank)
+                    .profit(findRanking.getProfit())
+                    .yield(findRanking.getTotalYield()).build());
+
+            if(Objects.equals(findRanking.getId(), sharedNumber)) {
+                userData = findRanking;
+                userRank = rank;
+            }
+            rank++;
+            if (rank > 30)
+                break;
+        }
+
+        if (userData == null) {
+            throw new IllegalArgumentException(ExceptionMessage.NO_DATA_ERROR);
+        }
+
+        return RankSharingResponseDto.builder()
+                .myRank(userRank)
+                .nickname(userData.getUser().getNickname())
+                .myProfit(userData.getProfit())
+                .myYield(userData.getTotalYield())
+                .otherRanking(otherRankDtos).build();
     }
 
     public Integer getHeadRank() {
