@@ -26,8 +26,8 @@ public class RankingController {
     }
 
     @GetMapping("/rankings")
-    public ResponseEntity<List<RankResponseDto>> getRank(@RequestParam("start") int cnt) {
-        List<RankResponseDto> list = rankingService.getSortedRank(cnt);
+    public ResponseEntity<List<RankResponseDto>> getRank(@RequestParam("start") int start, @RequestParam("end") int end) {
+        List<RankResponseDto> list = rankingService.getSortedRank(start, end);
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Total-Count", Integer.toString(rankingService.getHeadRank()));
         headers.set("Access-Control-Expose-Headers", "X-Total-Count");
