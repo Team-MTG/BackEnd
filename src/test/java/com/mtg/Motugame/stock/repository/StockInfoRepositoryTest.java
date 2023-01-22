@@ -58,4 +58,27 @@ class StockInfoRepositoryTest {
         Assertions.assertThat(findStocks.get(0).getStockName()).isEqualTo("SK하이닉스");
     }
 
+    @Test
+    @DisplayName("주식 코드로 주식정보 찾기 테스트")
+    public void findByStockCodeTest() {
+        //given
+        StockInfoEntity stockInfo1 = StockInfoEntity.builder()
+                .stockCode("2")
+                .stockName("삼성전자")
+                .build();
+        StockInfoEntity stockInfo2 = StockInfoEntity.builder()
+                .stockCode("1")
+                .stockName("SK하이닉스")
+                .build();
+        stockInfoRepository.save(stockInfo1);
+        stockInfoRepository.save(stockInfo2);
+
+        //when
+        StockInfoEntity findStock = stockInfoRepository.findByStockCode("2");
+
+        //then
+        Assertions.assertThat(findStock.getStockCode()).isEqualTo("2");
+        Assertions.assertThat(findStock.getStockName()).isEqualTo("삼성전자");
+    }
+
 }
