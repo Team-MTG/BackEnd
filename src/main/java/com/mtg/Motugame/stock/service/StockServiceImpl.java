@@ -19,6 +19,7 @@ import java.util.List;
 public class StockServiceImpl implements StockService {
     private final StockInfoRepository stockInfoRepository;
 
+    @Override
     public StockDataInfoDto getStockDataInfoDto(List<String> seeds) {
         return StockDataInfoDto.builder()
                 .stockPrices(getStocksPrices(seeds))
@@ -27,7 +28,7 @@ public class StockServiceImpl implements StockService {
     }
 
     //주식가격정보를 가져옴
-    public List<StockPriceDto> getStocksPrices(List<String> seeds) {
+    private List<StockPriceDto> getStocksPrices(List<String> seeds) {
         List<StockPriceDto> stockPriceDtoList = new ArrayList<>();
 
         for (var seed : seeds) {
@@ -75,8 +76,7 @@ public class StockServiceImpl implements StockService {
         return stockDatePriceDtos;
     }
 
-    @Override
-    public List<StockAverageDto> getAveragePrices(List<String> seeds) {
+    private List<StockAverageDto> getAveragePrices(List<String> seeds) {
         List<StockAverageDto> stockAverageDtoList = new ArrayList<>();
 
         List<StockPriceDto> stockPriceDtoList = getStocksPrices(seeds);
@@ -106,31 +106,6 @@ public class StockServiceImpl implements StockService {
         }
 
         return totalProfit.divide(new BigDecimal(String.valueOf(stockInfoEntity.getScoreRecords().size()))).doubleValue();
-    }
-
-    private List<String> convertSeedsToIndex(List<String> seeds) {
-        List<String> result = new ArrayList<>();
-        for (String seed : seeds) {
-            String stockIndex = seed.substring(0, 3);
-            result.add(Integer.parseInt(stockIndex) + "");
-        }
-        return result;
-    }
-
-    private List<StockDatePriceDto> getStockDatePriceDtoList(StockInfoEntity stockInfoEntity) {
-            List<StockDatePriceDto> stockDatePriceDtos = new ArrayList<>();
-
-            //주식 코드에 해당하는 가격정보 한달치 entity 리스트를 반환받음
-            List<StockPriceEntity> stockPriceEntities = stockInfoEntity.getStockPriceEntities();
-
-            //entity에서 필요한 정보(price, date) 추출 후 list저장
-            for (StockPriceEntity entity : stockPriceEntities) {
-                stockDatePriceDtos.add(StockDatePriceDto.builder()
-                        .price(entity.getClose())
-                        .date(entity.getDate()).build());
-            }
-
-            return stockDatePriceDtos;
     }
     
     public Integer getStocksInfo() {
