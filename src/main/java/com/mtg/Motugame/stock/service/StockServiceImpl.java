@@ -105,7 +105,7 @@ public class StockServiceImpl implements StockService {
             return 0.0;
         }
 
-        return totalProfit.divide(new BigDecimal(String.valueOf(stockInfoEntity.getScoreRecords().size()))).doubleValue();
+        return totalProfit.divide(new BigDecimal(String.valueOf(stockInfoEntity.getScoreRecords().size())),2).doubleValue();
     }
     
     public Integer getStocksInfo() {
